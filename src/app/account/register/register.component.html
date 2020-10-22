@@ -1,1 +1,52 @@
-<p>register works!</p>
+<div class="container main-container">
+    <h1>Crie sua conta!</h1>
+
+    <form novalidate [formGroup]="registerForm">
+        <h4>Informe todos os campos abaixo</h4>
+        <hr>
+
+        <div class="row">
+            <div class="col-10">
+                <div class="form-group">
+                    <label class="control-label">E-mail</label>
+                    <input class="form-control" id="email" type="text" placeholder="E-mail (obrigatório)"
+                        formControlName="email" [ngClass]="{ 'is-invalid' : displayMessage.email }" />
+                    <span class="text-danger" *ngIf="displayMessage.email">
+                        <p [innerHTML]="displayMessage.email"></p>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-10">
+                <div class="form-group">
+                    <label class="control-label">Senha</label>
+                    <input class="form-control" id="password" type="text" placeholder="Senha (obrigatório)"
+                        formControlName="password" [ngClass]="{ 'is-invalid' : displayMessage.password }" />
+                    <span class="text-danger" *ngIf="displayMessage.password">
+                        <p [innerHTML]="displayMessage.password"></p>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-10">
+                <div class="form-group">
+                    <label class="control-label">Confirmação da senha</label>
+                    <input class="form-control" id="confirmPassword" type="text"
+                        placeholder="Confirmação da senha (obrigatório)" formControlName="confirmPassword"
+                        [ngClass]="{ 'is-invalid' : displayMessage.confirmPassword }" />
+                    <span class="text-danger" *ngIf="displayMessage.confirmPassword">
+                        <p [innerHTML]="displayMessage.confirmPassword"></p>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <button type="submit" class="btn btn-block btn-success" [disabled]="!registerForm.valid">
+                    Finalizar cadastro
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

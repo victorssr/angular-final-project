@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MenuComponent } from './menu/menu.component';
@@ -8,19 +9,20 @@ import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
-        FooterComponent,
-        HomeComponent,
         MenuComponent,
+        HomeComponent,
+        FooterComponent,
         NotFoundComponent
     ],
     imports: [
         CommonModule,
-        NgbModule
+        NgbModule,
+        RouterModule
     ],
     exports: [
-        FooterComponent,
-        HomeComponent,
         MenuComponent,
+        HomeComponent,
+        FooterComponent,
         NotFoundComponent
     ]
 })

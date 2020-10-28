@@ -1,10 +1,16 @@
 <div class="container main-container">
     <h1>Crie sua conta!</h1>
 
+
     <form novalidate [formGroup]="registerForm">
         <h4>Informe todos os campos abaixo</h4>
         <hr>
-
+        <div class="alert alert-danger" *ngIf="errors.length > 0">
+            <h5>Não foi possível prosseguir: </h5>
+            <ul>
+                <li *ngFor="let error of errors">{{ error }}</li>
+            </ul>
+        </div>
         <div class="row">
             <div class="col-10">
                 <div class="form-group">

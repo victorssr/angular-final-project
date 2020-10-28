@@ -17,6 +17,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
+  errors: any[] = [];
+
   usuario: Usuario;
   registerForm: FormGroup;
 
@@ -78,10 +80,13 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   processarSucesso(response: any) {
+    this.registerForm.reset();
+    this.errors = [];
 
+    this.accountService.localStorage.salvarDadosLocaisUsuario(response);
   }
 
   processarFalha(fail: any) {
-
+    this.errors = fail.error.errors;
   }
 }

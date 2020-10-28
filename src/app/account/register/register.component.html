@@ -20,7 +20,7 @@
             <div class="col-10">
                 <div class="form-group">
                     <label class="control-label">Senha</label>
-                    <input class="form-control" id="password" type="text" placeholder="Senha (obrigatório)"
+                    <input class="form-control" id="password" type="password" placeholder="Senha (obrigatório)"
                         formControlName="password" [ngClass]="{ 'is-invalid' : displayMessage.password }" />
                     <span class="text-danger" *ngIf="displayMessage.password">
                         <p [innerHTML]="displayMessage.password"></p>
@@ -31,7 +31,7 @@
             <div class="col-10">
                 <div class="form-group">
                     <label class="control-label">Confirmação da senha</label>
-                    <input class="form-control" id="confirmPassword" type="text"
+                    <input class="form-control" id="confirmPassword" type="password"
                         placeholder="Confirmação da senha (obrigatório)" formControlName="confirmPassword"
                         [ngClass]="{ 'is-invalid' : displayMessage.confirmPassword }" />
                     <span class="text-danger" *ngIf="displayMessage.confirmPassword">
@@ -43,7 +43,8 @@
 
         <div class="row">
             <div class="col-4">
-                <button type="submit" class="btn btn-block btn-success" [disabled]="!registerForm.valid">
+                <button type="submit" class="btn btn-block btn-success" [disabled]="!registerForm.valid"
+                    (click)="finalizarCadastro();">
                     Finalizar cadastro
                 </button>
             </div>

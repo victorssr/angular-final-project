@@ -1,3 +1,5 @@
+import { AccountService } from './../services/account.service';
+import { Usuario } from './../models/usuario';
 import { FormGroup, FormBuilder, Validators, FormControl, FormControlName } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 
@@ -15,13 +17,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
+  usuario: Usuario;
   registerForm: FormGroup;
 
   validationMessages: ValidationMessages;
   genericValidator: GenericValidator;
   displayMessage: DisplayMessage = {};
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private accountService: AccountService) {
     this.validationMessages = {
       email: {
         required: 'Informe o e-mail',
@@ -61,4 +65,23 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     });
   }
 
+  finalizarCadastro() {
+    if (this.registerForm.dirty && this.registerForm.valid) {
+      this.usuario = Object.assign({}, this.usuario, this.registerForm.value);
+
+      this.accountService.registrarUsuario(this.usuario)
+        .subscribe(
+          sucesso => { this.processarSucesso(sucesso); },
+          falha => { this.processarFalha(falha); }
+        );
+    }
+  }
+
+  processarSucesso(response: any) {
+
+  }
+
+  processarFalha(fail: any) {
+
+  }
 }

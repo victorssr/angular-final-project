@@ -18,8 +18,12 @@ export class LocalStorageUtils {
         return JSON.parse(localStorage.getItem("vsdev.user"));
     }
 
-    public obterTokenUsuario() : string {
+    public obterTokenUsuario(): string {
         return localStorage.getItem('vsdev.token');
     }
 
+    public limparDadosLocaisUsuario() {
+        localStorage.removeItem('vsdev.user');
+        localStorage.removeItem('vsdev.token');
+    }
 }

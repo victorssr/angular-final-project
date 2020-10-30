@@ -6,13 +6,15 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MenuLoginComponent } from './menu-login/menu-login.component';
 
 @NgModule({
     declarations: [
         MenuComponent,
         HomeComponent,
         FooterComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        MenuLoginComponent
     ],
     imports: [
         CommonModule,

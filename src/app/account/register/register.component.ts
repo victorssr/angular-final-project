@@ -1,13 +1,14 @@
-import { AccountService } from './../services/account.service';
-import { Usuario } from './../models/usuario';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl, FormControlName } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 
 import { CustomValidators } from 'ng2-validation';
-
-import { ValidationMessages, GenericValidator, DisplayMessage } from './../../utils/generic-form-validation';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, fromEvent, merge } from 'rxjs';
 
+import { ValidationMessages, GenericValidator, DisplayMessage } from './../../utils/generic-form-validation';
+import { AccountService } from './../services/account.service';
+import { Usuario } from './../models/usuario';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +28,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   displayMessage: DisplayMessage = {};
 
   constructor(private fb: FormBuilder,
-    private accountService: AccountService) {
+    private accountService: AccountService,
+    private toastr: ToastrService,
+    private router: Router) {
+
     this.validationMessages = {
       email: {
         required: 'Informe o e-mail',
@@ -84,9 +88,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.errors = [];
 
     this.accountService.localStorage.salvarDadosLocaisUsuario(response);
+
+    let toast = this.toastr.success('Sua conta foi registrada com sucesso.', 'Sucesso!');
+    toast.onHidden.subscribe(() => {
+      this.router.navigate(['/home']);
+    });
   }
 
   processarFalha(fail: any) {
     this.errors = fail.error.errors;
+
+    this.toastr.error('Não foi possível registrar a sua conta.', 'Ocorreu um problema!');
   }
 }

@@ -1,9 +1,10 @@
+import { environment } from './../../environments/environment';
 import { LocalStorageUtils } from './../utils/localstorage';
 import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
 export abstract class BaseService {
-    protected urlServiceV1: String = "https://localhost:5001/api/v1/";
+    protected urlServiceV1: String = environment.apiUrlV1;
 
     public localStorage = new LocalStorageUtils();
 
@@ -23,7 +24,7 @@ export abstract class BaseService {
         let customError: string[] = [];
 
         if (response instanceof HttpErrorResponse) {
-            if (response.statusText === "Unknow Error") {
+            if (response.statusText === "Unknown Error") {
                 customError.push("Ocorreu um erro desconhecido");
                 response.error.errors = customError;
             }

@@ -1,3 +1,5 @@
+import { StringUtils } from './../../utils/string-utils';
+
 import { FormGroup, FormBuilder, Validators, FormControlName } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 
@@ -5,6 +7,8 @@ import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { Observable, fromEvent, merge } from 'rxjs';
 
 import { DisplayMessage, ValidationMessages, GenericValidator } from './../../utils/generic-form-validation';
+import { CepBusca } from './../models/cep';
+import { CasaService } from './../services/casa.service';
 
 @Component({
   selector: 'app-novo',
@@ -23,7 +27,11 @@ export class NovoComponent implements OnInit, AfterViewInit {
   genericValidator: GenericValidator;
   displayMessage: DisplayMessage = {};
 
-  constructor(private formBuilder: FormBuilder) {
+  errors: string[] = [];
+
+  constructor(private formBuilder: FormBuilder,
+    private casaService: CasaService) {
+
     this.validationMessages = {
       valorDespesas: {
         required: 'O valor das despesas é obrigatório',
@@ -73,9 +81,13 @@ export class NovoComponent implements OnInit, AfterViewInit {
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
     merge(...controBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.novoFormGroup);
-      this.alteracaoNaoSalva = true;
+      this.processarMensagens();
     });
+  }
+
+  processarMensagens() {
+    this.displayMessage = this.genericValidator.processarMensagens(this.novoFormGroup);
+    this.alteracaoNaoSalva = true;
   }
 
   salvar() {
@@ -88,8 +100,31 @@ export class NovoComponent implements OnInit, AfterViewInit {
     this.novoFormGroup.reset();
   }
 
-  processarFalha(fail: any) {
+  processarFalha(fail: any) { }
 
+  buscarCep(cep: string) {
+    const numeroCep = StringUtils.somenteNumeros(cep);
+    if (numeroCep.length != 8) return;
+
+    this.casaService.buscarCep(numeroCep)
+      .subscribe(
+        cepRetorno => this.preencherEndereco(cepRetorno),
+        erro => this.errors.push(erro)
+      );
+  }
+
+  preencherEndereco(cep: CepBusca) {
+    this.novoFormGroup.patchValue({
+      endereco: {
+        logradouro: cep.logradouro,
+        bairro: cep.bairro,
+        cidade: cep.localidade,
+        estado: cep.uf,
+        cep: cep.cep,
+      }
+    });
+    
+    this.processarMensagens();
   }
 
 }

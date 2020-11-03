@@ -29,8 +29,7 @@ export abstract class BaseService {
                 response.error.errors = customError;
             }
         }
-
-        console.error(response);
+        
         return throwError(response);
     }
 }

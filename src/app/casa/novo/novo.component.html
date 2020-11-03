@@ -5,6 +5,13 @@
         <hr />
         <h4>Informe os campos abaixo:</h4>
 
+        <div class="alert alert-danger" *ngIf="errors.length > 0">
+            <h5>Não foi possível prosseguir:</h5>
+            <ul>
+                <li *ngFor="let error of errors">{{ error }}</li>
+            </ul>
+        </div>
+
         <div class="form-group">
             <label class="control-label">Despesas:</label>
 
@@ -25,7 +32,7 @@
                 <label class="control-label">Cep:</label>
                 <input class="form-control" placeholder="(obrigatório)" type="text"
                     [ngClass]="{ 'is-invalid' : displayMessage.cep }" id="cep" name="cep" formControlName="cep" cep
-                    [textMask]="{ mask: MASKS.cep.textMask }" />
+                    [textMask]="{ mask: MASKS.cep.textMask }" (blur)="buscarCep($event.target.value)" />
                 <span class="text-danger" *ngIf="displayMessage.cep">
                     <p [innerHTML]="displayMessage.cep"></p>
                 </span>
@@ -84,6 +91,12 @@
                 </span>
             </div>
         </div>
+
+
+        <button type="button" class="btn btn-primary mr-5" [routerLink]="['/casa/lista']">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Voltar
+        </button>
 
         <button type="submit" class="btn btn-success" [disabled]="!novoFormGroup.valid" (click)="salvar()">
             <i class="fa fa-check mr-2"></i>

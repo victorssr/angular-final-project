@@ -11,6 +11,7 @@ import { ListaComponent } from './lista/lista.component';
 import { NovoComponent } from './novo/novo.component';
 import { CasaRoutingModule } from './casa.route';
 import { CasaAppComponent } from './casa.app.component';
+import { CasaService } from './services/casa.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,9 @@ import { CasaAppComponent } from './casa.app.component';
     HttpClientModule,
     NgBrazil,
     TextMaskModule
+  ],
+  providers: [
+    CasaService
   ]
 })
 export class CasaModule { }

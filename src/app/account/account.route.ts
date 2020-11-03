@@ -1,3 +1,4 @@
+import { AccountGuard } from './services/account.guard';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AccountAppComponent } from './account.app.component';
@@ -9,8 +10,8 @@ const accountRouterConfig: Routes = [
     {
         path: '', component: AccountAppComponent,
         children: [
-            { path: 'login', component: LoginComponent },
-            { path: 'register', component: RegisterComponent },
+            { path: 'login', component: LoginComponent, canActivate: [AccountGuard] },
+            { path: 'register', component: RegisterComponent, canDeactivate: [AccountGuard], canActivate: [AccountGuard] },
         ]
     }
 ];

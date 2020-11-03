@@ -23,6 +23,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   usuario: Usuario;
   registerForm: FormGroup;
 
+  alteracaoNaoSalva: Boolean = false;
+
   validationMessages: ValidationMessages;
   genericValidator: GenericValidator;
   displayMessage: DisplayMessage = {};
@@ -68,6 +70,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     merge(...controlBlurs).subscribe(() => {
       this.displayMessage = this.genericValidator.processarMensagens(this.registerForm);
+      this.alteracaoNaoSalva = true;
     });
   }
 
@@ -80,6 +83,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
           sucesso => { this.processarSucesso(sucesso); },
           falha => { this.processarFalha(falha); }
         );
+
+      this.alteracaoNaoSalva = false;
     }
   }
 

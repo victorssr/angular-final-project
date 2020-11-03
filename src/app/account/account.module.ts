@@ -1,3 +1,4 @@
+import { AccountGuard } from './services/account.guard';
 import { AccountRoutingModule } from './account.route';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -27,7 +28,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule
   ],
   providers: [
-    AccountService
+    AccountService,
+    AccountGuard
   ]
 })
 export class AccountModule { }

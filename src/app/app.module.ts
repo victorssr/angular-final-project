@@ -4,10 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
+import { NgBrazil } from 'ng-brazil'
+import { TextMaskModule } from 'angular2-text-mask';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { ToastrModule } from 'ngx-toastr';
     NgbModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgBrazil,
+    TextMaskModule
   ],
   providers: [],
   bootstrap: [AppComponent]

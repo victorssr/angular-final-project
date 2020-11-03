@@ -1,10 +1,10 @@
+import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+
 import { AccountGuard } from './services/account.guard';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { AccountAppComponent } from './account.app.component';
-
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
 
 const accountRouterConfig: Routes = [
     {

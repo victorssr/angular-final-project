@@ -1,0 +1,93 @@
+<div class="container main-container">
+    <h1>Nova moradia</h1>
+
+    <form novalidate [formGroup]="novoFormGroup">
+        <hr />
+        <h4>Informe os campos abaixo:</h4>
+
+        <div class="form-group">
+            <label class="control-label">Despesas:</label>
+
+            <input class="form-control" placeholder="Valor total das despesas (obrigatório)" type="text"
+                id="valorDespesas" name="valorDespesas" formControlName="valorDespesas"
+                [ngClass]="{ 'is-invalid' : displayMessage.valorDespesas }"
+                [textMask]="{ mask: MASKS.currency.textMask }" />
+
+            <span class="text-danger" *ngIf="displayMessage.valorDespesas">
+                <p [innerHTML]="displayMessage.valorDespesas"></p>
+            </span>
+        </div>
+
+        <h4>Endereço</h4>
+        <hr />
+        <div formGroupName="endereco">
+            <div class="form-group">
+                <label class="control-label">Cep:</label>
+                <input class="form-control" placeholder="(obrigatório)" type="text"
+                    [ngClass]="{ 'is-invalid' : displayMessage.cep }" id="cep" name="cep" formControlName="cep" cep
+                    [textMask]="{ mask: MASKS.cep.textMask }" />
+                <span class="text-danger" *ngIf="displayMessage.cep">
+                    <p [innerHTML]="displayMessage.cep"></p>
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Logradouro:</label>
+                <input class="form-control" placeholder="Rua, Av., etc (obrigatório)" type="text"
+                    [ngClass]="{ 'is-invalid' : displayMessage.logradouro }" id="logradouro" name="logradouro"
+                    formControlName="logradouro" />
+                <span class="text-danger" *ngIf="displayMessage.logradouro">
+                    <p [innerHTML]="displayMessage.logradouro"></p>
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Número:</label>
+                <input class="form-control" placeholder="(obrigatório)" type="text"
+                    [ngClass]="{ 'is-invalid' : displayMessage.numero }" id="numero" name="numero"
+                    formControlName="numero" />
+                <span class="text-danger" *ngIf="displayMessage.numero">
+                    <p [innerHTML]="displayMessage.numero"></p>
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Complemento:</label>
+                <input class="form-control" type="text" [ngClass]="{ 'is-invalid' : displayMessage.complemento }"
+                    id="complemento" name="complemento" formControlName="complemento" />
+                <span class="text-danger" *ngIf="displayMessage.complemento">
+                    <p [innerHTML]="displayMessage.complemento"></p>
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Bairro:</label>
+                <input class="form-control" placeholder="(obrigatório)" type="text"
+                    [ngClass]="{ 'is-invalid' : displayMessage.bairro }" id="bairro" name="bairro"
+                    formControlName="bairro" />
+                <span class="text-danger" *ngIf="displayMessage.bairro">
+                    <p [innerHTML]="displayMessage.bairro"></p>
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Cidade:</label>
+                <input class="form-control" placeholder="(obrigatório)" type="text"
+                    [ngClass]="{ 'is-invalid' : displayMessage.cidade }" id="cidade" name="cidade"
+                    formControlName="cidade" />
+                <span class="text-danger" *ngIf="displayMessage.cidade">
+                    <p [innerHTML]="displayMessage.cidade"></p>
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Estado:</label>
+                <input class="form-control" placeholder="UF do estado (obrigatório)" type="text"
+                    [ngClass]="{ 'is-invalid' : displayMessage.estado }" id="estado" name="estado"
+                    formControlName="estado" />
+                <span class="text-danger" *ngIf="displayMessage.estado">
+                    <p [innerHTML]="displayMessage.estado"></p>
+                </span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success" [disabled]="!novoFormGroup.valid" (click)="salvar()">
+            <i class="fa fa-check mr-2"></i>
+            Cadastrar moradia
+        </button>
+    </form>
+</div>

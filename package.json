@@ -21,10 +21,13 @@
     "@angular/platform-browser-dynamic": "~10.0.9",
     "@angular/router": "~10.0.9",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "angular2-text-mask": "^9.0.0",
     "bootstrap": "^4.5.0",
+    "ng-brazil": "^2.2.2",
     "ng2-validation": "^4.2.0",
     "ngx-toastr": "^13.1.0",
     "rxjs": "~6.5.5",
+    "text-mask-addons": "^3.8.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },

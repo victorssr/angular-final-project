@@ -11,6 +11,11 @@ const routes: Routes = [
     loadChildren: () => import('./account/account.module')
       .then(m => m.AccountModule)
   },
+  {
+    path: 'casa',
+    loadChildren: () => import('./casa/casa.module')
+      .then(m => m.CasaModule)
+  },
   
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found' },

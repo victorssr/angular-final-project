@@ -12,17 +12,23 @@ import { BaseService } from '../../services/base.service';
 export class AccountService extends BaseService {
     constructor(private http: HttpClient) { super(); }
 
-    registrarUsuario(usuario: Usuario) : Observable<Usuario> {
+    registrarUsuario(usuario: Usuario): Observable<Usuario> {
         let response = this.http.post(this.urlServiceV1 + 'register', usuario, this.obterHeaderJson())
-        .pipe(
-            map(this.extractData),
-            catchError(this.serviceError)
-        );
+            .pipe(
+                map(this.extractData),
+                catchError(this.serviceError)
+            );
 
         return response;
     }
 
-    login(usuario: Usuario) {
-        
+    login(usuario: Usuario): Observable<Usuario> {
+        let response = this.http.post(this.urlServiceV1 + 'login', usuario, this.obterHeaderJson())
+            .pipe(
+                map(this.extractData),
+                catchError(this.serviceError)
+            );
+
+        return response;
     }
 }

@@ -16,6 +16,15 @@ export abstract class BaseService {
         }
     }
 
+    protected obterAuthHeaderJson() {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.localStorage.obterTokenUsuario()}`
+            })
+        }
+    }
+
     protected extractData(response: any) {
         return response.data || {};
     }
@@ -29,7 +38,7 @@ export abstract class BaseService {
                 response.error.errors = customError;
             }
         }
-        
+
         return throwError(response);
     }
 }

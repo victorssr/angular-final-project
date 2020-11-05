@@ -1,3 +1,5 @@
+import { ToastrService } from 'ngx-toastr';
+import { Moradia } from './../models/moradia';
 import { StringUtils } from './../../utils/string-utils';
 
 import { FormGroup, FormBuilder, Validators, FormControlName } from '@angular/forms';
@@ -20,6 +22,8 @@ export class NovoComponent implements OnInit, AfterViewInit {
 
   public MASKS = MASKS;
 
+  moradia: Moradia;
+
   novoFormGroup: FormGroup;
   alteracaoNaoSalva: Boolean = false;
 
@@ -30,12 +34,14 @@ export class NovoComponent implements OnInit, AfterViewInit {
   errors: string[] = [];
 
   constructor(private formBuilder: FormBuilder,
-    private casaService: CasaService) {
+    private casaService: CasaService,
+    private toastr: ToastrService) {
 
     this.validationMessages = {
       valorDespesas: {
         required: 'O valor das despesas é obrigatório',
-        min: 'O valor das despesas é obrigatório'
+        min: 'O valor das despesas é obrigatório',
+        currency: 'O valor da despesas está inválido'
       },
       logradouro: {
         required: 'O logradouro é obrigatório'
@@ -63,7 +69,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.novoFormGroup = this.formBuilder.group({
-      valorDespesas: ['', [Validators.required, Validators.min(1), NgBrazilValidators.currency]],
+      valorDespesas: ['', [Validators.required, NgBrazilValidators.currency]],
       endereco: this.formBuilder.group({
         logradouro: ['', [Validators.required]],
         numero: ['', [Validators.required]],
@@ -92,15 +98,35 @@ export class NovoComponent implements OnInit, AfterViewInit {
 
   salvar() {
     if (this.novoFormGroup.dirty && this.novoFormGroup.valid) {
+      this.moradia = Object.assign({}, this.moradia, this.novoFormGroup.value);
 
+      this.moradia.valorDespesas = StringUtils.currencyStringToNumber(this.moradia.valorDespesas.toString());
+      this.moradia.endereco.cep = StringUtils.somenteNumeros(this.moradia.endereco.cep);
+
+      this.casaService.novaMoradia(this.moradia)
+        .subscribe(
+          sucesso => this.processarSucesso(sucesso),
+          falha => this.processarFalha(falha)
+        );
+
+      this.alteracaoNaoSalva = false;
     }
   }
 
   processarSucesso(response: any) {
     this.novoFormGroup.reset();
+    this.errors = [];
+
+    this.toastr.success('Moradia registrada com sucesso.', 'Sucesso!');
   }
 
-  processarFalha(fail: any) { }
+  processarFalha(fail: any) {
+    if (fail.error.errors) {
+      this.errors = fail.error.errors;
+    }
+
+    this.toastr.error('Não foi possível registrar a moradia', "Ocorreu um problema");
+  }
 
   buscarCep(cep: string) {
     const numeroCep = StringUtils.somenteNumeros(cep);
@@ -123,7 +149,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
         cep: cep.cep,
       }
     });
-    
+
     this.processarMensagens();
   }
 

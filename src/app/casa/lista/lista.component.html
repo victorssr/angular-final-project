@@ -1,7 +1,32 @@
 <div class="container main-container">
-    <p>lista works!</p>
 
-    <button [routerLink]="['/casa/novo']" class="btn btn-success">
-        <i class="fa fa-plus mr-2"></i>Cadastrar moradia
-    </button>
+    <h1>Moradias</h1>
+
+    <p>
+        <a [routerLink]="['/casa/novo']" class="btn btn-success">
+            <i class="fa fa-plus mr-2"></i>Cadastrar moradia
+        </a>
+    </p>
+
+    <table class="table table-hover">
+        <tr class="thead-dark">
+            <th>Valor da Despesa</th>
+            <th style="width: 20%;"></th>
+        </tr>
+
+        <tr *ngFor="let moradia of moradias">
+            <td>{{ moradia.valorDespesas | currencyBrazil }}</td>
+            <td>
+                <a class="btn btn-info mr-2" [routerLink]="['/casa/detalhes/', moradia.id]">
+                    <i class="fa fa-search"></i>
+                </a>
+                <a class="btn btn-warning mr-2" [routerLink]="['/casa/editar/', moradia.id]">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a class="btn btn-danger mr-2" [routerLink]="['/casa/excluir/', moradia.id]">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    </table>
 </div>

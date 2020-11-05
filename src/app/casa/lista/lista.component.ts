@@ -1,3 +1,5 @@
+import { CasaService } from './../services/casa.service';
+import { Moradia } from './../models/moradia';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaComponent implements OnInit {
 
-  constructor() { }
+  moradias: Moradia[] = [];
+  errorMessage: string;
+
+  constructor(private casaService: CasaService) { }
 
   ngOnInit(): void {
+    this.casaService.obterTodos()
+      .subscribe(
+        moradias => this.moradias = moradias,
+        falha => this.errorMessage
+      );
   }
 
 }

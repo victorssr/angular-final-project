@@ -18,6 +18,12 @@ export class CasaService extends BaseService {
             .pipe(catchError(this.serviceError));
     }
 
+    obterTodos(): Observable<Moradia[]> {
+        return this.http
+            .get<Moradia[]>(this.urlServiceV1 + 'casas', this.obterAuthHeaderJson())
+            .pipe(catchError(this.serviceError));
+    }
+
     novaMoradia(moradia: Moradia): Observable<Moradia> {
         return this.http
             .post(this.urlServiceV1 + 'casas', moradia, this.obterAuthHeaderJson())

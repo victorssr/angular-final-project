@@ -83,10 +83,10 @@ export class NovoComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let controBlurs: Observable<any>[] = this.formInputElements
+    let controlBlurs: Observable<any>[] = this.formInputElements
       .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
 
-    merge(...controBlurs).subscribe(() => {
+    merge(...controlBlurs).subscribe(() => {
       this.processarMensagens();
     });
   }

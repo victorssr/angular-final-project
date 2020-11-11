@@ -12,12 +12,15 @@ import { NovoComponent } from './novo/novo.component';
 import { CasaRoutingModule } from './casa.route';
 import { CasaAppComponent } from './casa.app.component';
 import { CasaService } from './services/casa.service';
+import { EditarComponent } from './editar/editar.component';
+import { CasaResolve } from './services/casa.resolve';
 
 @NgModule({
   declarations: [
     CasaAppComponent,
     ListaComponent,
-    NovoComponent
+    NovoComponent,
+    EditarComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +33,8 @@ import { CasaService } from './services/casa.service';
     TextMaskModule
   ],
   providers: [
-    CasaService
+    CasaService,
+    CasaResolve
   ]
 })
 export class CasaModule { }

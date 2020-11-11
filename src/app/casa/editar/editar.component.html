@@ -1,0 +1,67 @@
+<div class="container main-container">
+    <h1>Editar moradia</h1>
+
+    <form novalidate [formGroup]="formGroupMoradia">
+        <hr />
+        <h4>Informe os campos abaixo:</h4>
+
+        <input type="hidden" id="id" name="id" formControlName="id" />
+
+        <div class="alert alert-danger" *ngIf="errors.length > 0">
+            <h5>Não foi possível prosseguir:</h5>
+            <ul>
+                <li *ngFor="let error of errors">{{ error }}</li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Despesas:</label>            
+            <input class="form-control" placeholder="Valor total das despesas (obrigatório)" type="text"
+                id="valorDespesas" name="valorDespesas" formControlName="valorDespesas"
+                [ngClass]="{ 'is-invalid' : displayMessage.valorDespesas }"
+                [textMask]="{ mask: MASKS.currency.textMask }" />
+
+            <span class="text-danger" *ngIf="displayMessage.valorDespesas">
+                <p [innerHTML]="displayMessage.valorDespesas"></p>
+            </span>
+        </div>
+
+        <button type="button" class="btn btn-primary mr-5" [routerLink]="['/casa/lista']">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Voltar
+        </button>
+        <button type="submit" class="btn btn-success" [disabled]="!formGroupMoradia.valid || !formGroupMoradia.dirty" (click)="salvar()">
+            <i class="fa fa-check mr-2"></i>
+            Salvar alterações
+        </button>
+
+        <hr>
+        <h4>Endereço</h4>
+        <table class="table table-hover" *ngIf="moradia.endereco">
+            <tr class="thead-dark">
+                <th>Cep</th>
+                <th>Logradouro</th>
+                <th>Número</th>
+                <th>Complemento</th>
+                <th>Bairro</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>{{ moradia.endereco.cep }}</td>
+                <td>{{ moradia.endereco.logradouro }}</td>
+                <td>{{ moradia.endereco.numero }}</td>
+                <td>{{ moradia.endereco.complemento }}</td>
+                <td>{{ moradia.endereco.bairro }}</td>
+                <td>{{ moradia.endereco.cidade }}</td>
+                <td>{{ moradia.endereco.estado }}</td>
+                <td>
+                    <a class="btn btn-warning">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

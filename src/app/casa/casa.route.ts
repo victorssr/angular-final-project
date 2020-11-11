@@ -1,3 +1,5 @@
+import { CasaResolve } from './services/casa.resolve';
+import { EditarComponent } from './editar/editar.component';
 import { NovoComponent } from './novo/novo.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from "@angular/core";
@@ -11,6 +13,12 @@ const casaRouterConfig: Routes = [
         children: [
             { path: 'lista', component: ListaComponent },
             { path: 'novo', component: NovoComponent },
+            {
+                path: 'editar/:id', component: EditarComponent,
+                resolve: {
+                    casa: CasaResolve
+                }
+            },
         ]
     }
 ];

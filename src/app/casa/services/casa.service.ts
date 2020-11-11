@@ -24,9 +24,24 @@ export class CasaService extends BaseService {
             .pipe(catchError(this.serviceError));
     }
 
+    obterPorId(id: string): Observable<Moradia> {
+        return this.http
+            .get<Moradia>(this.urlServiceV1 + 'casas/' + id, this.obterAuthHeaderJson())
+            .pipe(catchError(this.serviceError));
+    }
+
     novaMoradia(moradia: Moradia): Observable<Moradia> {
         return this.http
             .post(this.urlServiceV1 + 'casas', moradia, this.obterAuthHeaderJson())
+            .pipe(
+                map(this.extractData),
+                catchError(this.serviceError)
+            );
+    }
+
+    atualizar(moradia: Moradia): Observable<Moradia> {
+        return this.http
+            .put(this.urlServiceV1 + 'casas/' + moradia.id, moradia, this.obterAuthHeaderJson())
             .pipe(
                 map(this.extractData),
                 catchError(this.serviceError)

@@ -26,7 +26,7 @@ export class ExcluirComponent implements OnInit {
 
   ngOnInit(): void {
     this.moradia = this.route.snapshot.data['casa'];
-    this.enderecoMapa = this.sanitizer.bypassSecurityTrustResourceUrl("https://www.google.com/maps/embed/v1/place?q=" + this.obterEnderecoCompleto() + "&key=AIzaSyBPQoKQIExrJx1ZYYoNLTC0KoW658tnt7U");
+    this.enderecoMapa = this.sanitizer.bypassSecurityTrustResourceUrl("https://www.google.com/maps/embed/v1/place?q=" + this.obterEnderecoCompleto() + "&key={MAPS_API_KEY}");
   }
 
   obterEnderecoCompleto(): string {

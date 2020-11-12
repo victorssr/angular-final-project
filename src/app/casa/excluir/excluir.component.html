@@ -1,0 +1,35 @@
+<div class="container main-container">
+    <h1>Excluir Moradia</h1>
+
+    <h4>Informações da moradia</h4>
+    <div class="row">
+        <div class="col-12">
+            Valor das despesas: {{moradia.valorDespesas | currencyBrazil}}
+        </div>
+    </div>
+
+    <hr />
+    <h4>Endereço</h4>
+    <div class="row">
+        <div class="col-12">
+            <iframe width="100%" height="450" frameborder="0" style="border: 0;" allowfullscreen
+                [src]="enderecoMapa"></iframe>
+        </div>
+    </div>
+
+    <br />
+    <div class="row">
+        <div class="col-4">
+            <a class="btn btn-block btn-info" [routerLink]="['/casa/lista']">
+                <i class="fa fa-arrow-left mr-2"></i>
+                Voltar
+            </a>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-block btn-danger" (click)="deletarCasa()">
+                <i class="fa fa-times mr-2"></i>
+                Excluir Moradia
+            </button>
+        </div>
+    </div>
+</div>

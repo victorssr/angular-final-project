@@ -16,6 +16,7 @@ import { CasaService } from './services/casa.service';
 import { EditarComponent } from './editar/editar.component';
 import { CasaResolve } from './services/casa.resolve';
 import { DetalhesComponent } from './detalhes/detalhes.component';
+import { ExcluirComponent } from './excluir/excluir.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { DetalhesComponent } from './detalhes/detalhes.component';
     ListaComponent,
     NovoComponent,
     EditarComponent,
-    DetalhesComponent
+    DetalhesComponent,
+    ExcluirComponent
   ],
   imports: [
     CommonModule,

@@ -58,4 +58,13 @@ export class CasaService extends BaseService {
             );
     }
 
+    deletar(id: string): Observable<Moradia> {
+        return this.http
+            .delete(this.urlServiceV1 + 'casas/' + id, this.obterAuthHeaderJson())
+            .pipe(
+                map(this.extractData),
+                catchError(this.serviceError)
+            );
+    }
+
 }

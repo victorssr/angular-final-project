@@ -1,3 +1,4 @@
+import { ExcluirComponent } from './excluir/excluir.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { CasaResolve } from './services/casa.resolve';
 import { EditarComponent } from './editar/editar.component';
@@ -22,6 +23,12 @@ const casaRouterConfig: Routes = [
             },
             {
                 path: 'detalhes/:id', component: DetalhesComponent,
+                resolve: {
+                    casa: CasaResolve
+                }
+            },
+            {
+                path: 'excluir/:id', component: ExcluirComponent,
                 resolve: {
                     casa: CasaResolve
                 }

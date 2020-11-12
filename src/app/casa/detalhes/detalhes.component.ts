@@ -8,7 +8,6 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './detalhes.component.html'
 })
 export class DetalhesComponent implements OnInit {
-
   moradia: Moradia;
   enderecoMapa;
 

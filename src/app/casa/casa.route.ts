@@ -1,3 +1,4 @@
+import { DetalhesComponent } from './detalhes/detalhes.component';
 import { CasaResolve } from './services/casa.resolve';
 import { EditarComponent } from './editar/editar.component';
 import { NovoComponent } from './novo/novo.component';
@@ -15,6 +16,12 @@ const casaRouterConfig: Routes = [
             { path: 'novo', component: NovoComponent },
             {
                 path: 'editar/:id', component: EditarComponent,
+                resolve: {
+                    casa: CasaResolve
+                }
+            },
+            {
+                path: 'detalhes/:id', component: DetalhesComponent,
                 resolve: {
                     casa: CasaResolve
                 }

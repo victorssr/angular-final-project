@@ -15,13 +15,15 @@ import { CasaAppComponent } from './casa.app.component';
 import { CasaService } from './services/casa.service';
 import { EditarComponent } from './editar/editar.component';
 import { CasaResolve } from './services/casa.resolve';
+import { DetalhesComponent } from './detalhes/detalhes.component';
 
 @NgModule({
   declarations: [
     CasaAppComponent,
     ListaComponent,
     NovoComponent,
-    EditarComponent
+    EditarComponent,
+    DetalhesComponent
   ],
   imports: [
     CommonModule,

@@ -1,3 +1,4 @@
+import { Endereco } from './../models/endereco';
 import { Moradia } from './../models/moradia';
 import { map, catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -42,6 +43,15 @@ export class CasaService extends BaseService {
     atualizar(moradia: Moradia): Observable<Moradia> {
         return this.http
             .put(this.urlServiceV1 + 'casas/' + moradia.id, moradia, this.obterAuthHeaderJson())
+            .pipe(
+                map(this.extractData),
+                catchError(this.serviceError)
+            );
+    }
+
+    atualizarEndereco(endereco: Endereco): Observable<Endereco> {
+        return this.http
+            .put(this.urlServiceV1 + 'endereco/' + endereco.id, endereco, this.obterAuthHeaderJson())
             .pipe(
                 map(this.extractData),
                 catchError(this.serviceError)

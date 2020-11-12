@@ -15,7 +15,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label">Despesas:</label>            
+            <label class="control-label">Despesas:</label>
             <input class="form-control" placeholder="Valor total das despesas (obrigatório)" type="text"
                 id="valorDespesas" name="valorDespesas" formControlName="valorDespesas"
                 [ngClass]="{ 'is-invalid' : displayMessage.valorDespesas }"
@@ -30,7 +30,8 @@
             <i class="fa fa-arrow-left mr-2"></i>
             Voltar
         </button>
-        <button type="submit" class="btn btn-success" [disabled]="!formGroupMoradia.valid || !formGroupMoradia.dirty" (click)="salvar()">
+        <button type="submit" class="btn btn-success" [disabled]="!formGroupMoradia.valid || !formGroupMoradia.dirty"
+            (click)="salvar()">
             <i class="fa fa-check mr-2"></i>
             Salvar alterações
         </button>
@@ -57,11 +58,127 @@
                 <td>{{ moradia.endereco.cidade }}</td>
                 <td>{{ moradia.endereco.estado }}</td>
                 <td>
-                    <a class="btn btn-warning">
+                    <button class="btn btn-warning" (click)="open(content)">
                         <i class="fa fa-edit"></i>
-                    </a>
+                    </button>
                 </td>
             </tr>
         </table>
     </form>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Endereço</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form [formGroup]="formGroupEndereco" (ngSubmit)="atualizarEndereco()">
+            <div class="alert alert-danger" *ngIf="errorsEndereco.length > 0">
+                <h5>Não foi possível prosseguir:</h5>
+                <ul>
+                    <li *ngFor="let error of errorsEndereco">{{ error }}</li>
+                </ul>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Cep:</label>
+                    <input class="form-control" placeholder="(obrigatório)" type="text"
+                        [ngClass]="{ 'is-invalid' : displayMessage.cep }" id="cep" name="cep" formControlName="cep" cep
+                        [textMask]="{ mask: MASKS.cep.textMask }" (blur)="buscarCep($event.target.value)" />
+                    <span class="text-danger" *ngIf="displayMessage.cep">
+                        <p [innerHTML]="displayMessage.cep"></p>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Logradouro:</label>
+                    <input class="form-control" placeholder="Rua, Av., etc (obrigatório)" type="text"
+                        [ngClass]="{ 'is-invalid' : displayMessage.logradouro }" id="logradouro" name="logradouro"
+                        formControlName="logradouro" />
+                    <span class="text-danger" *ngIf="displayMessage.logradouro">
+                        <p [innerHTML]="displayMessage.logradouro"></p>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Número:</label>
+                    <input class="form-control" placeholder="(obrigatório)" type="number"
+                        [ngClass]="{ 'is-invalid' : displayMessage.numero }" id="numero" name="numero"
+                        formControlName="numero" />
+                    <span class="text-danger" *ngIf="displayMessage.numero">
+                        <p [innerHTML]="displayMessage.numero"></p>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Complemento:</label>
+                    <input class="form-control" type="text" [ngClass]="{ 'is-invalid' : displayMessage.complemento }"
+                        id="complemento" name="complemento" formControlName="complemento" />
+                    <span class="text-danger" *ngIf="displayMessage.complemento">
+                        <p [innerHTML]="displayMessage.complemento"></p>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Bairro:</label>
+                    <input class="form-control" placeholder="(obrigatório)" type="text"
+                        [ngClass]="{ 'is-invalid' : displayMessage.bairro }" id="bairro" name="bairro"
+                        formControlName="bairro" />
+                    <span class="text-danger" *ngIf="displayMessage.bairro">
+                        <p [innerHTML]="displayMessage.bairro"></p>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Cidade:</label>
+                    <input class="form-control" placeholder="(obrigatório)" type="text"
+                        [ngClass]="{ 'is-invalid' : displayMessage.cidade }" id="cidade" name="cidade"
+                        formControlName="cidade" />
+                    <span class="text-danger" *ngIf="displayMessage.cidade">
+                        <p [innerHTML]="displayMessage.cidade"></p>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Estado:</label>
+                    <select class="form-control" id="estado" formControlName="estado"
+                        [ngClass]="{ 'is-invalid': displayMessage.estado }">
+                        <option value="">Estado</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                    </select>
+                    <span class="text-danger" *ngIf="displayMessage.estado">
+                        <p [innerHTML]="displayMessage.estado"></p>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success"
+                    [disabled]="!formGroupEndereco.dirty || !formGroupEndereco.valid">
+                    <i class="fa fa-check mr-2"></i>Salvar alterações
+                </button>
+            </div>
+        </form>
+    </ng-template>
 </div>

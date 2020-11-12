@@ -1,3 +1,4 @@
+import { CepBusca } from './../models/cep';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControlName } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
@@ -6,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DisplayMessage, GenericValidator, ValidationMessages } from './../../utils/generic-form-validation';
 import { CasaService } from './../services/casa.service';
@@ -27,6 +29,7 @@ export class EditarComponent implements OnInit, AfterViewInit {
   formGroupEndereco: FormGroup;
 
   errors: string[] = [];
+  errorsEndereco: string[] = [];
   alteracaoNaoSalva: boolean = false;
 
   validationMessages: ValidationMessages;
@@ -40,7 +43,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private casaService: CasaService,
     private toastr: ToastrService,
-    private router: Router) {
+    private router: Router,
+    private modalService: NgbModal) {
 
     this.moradia = this.route.snapshot.data['casa'];
 
@@ -157,4 +161,59 @@ export class EditarComponent implements OnInit, AfterViewInit {
 
     this.toastr.error('Não foi possível atualizar a moradia.', 'Ocorreu um problema!');
   }
+
+  open(content) {
+    this.modalService.open(content);
+  }
+
+  buscarCep(cep: string) {
+    const numeroCep = StringUtils.somenteNumeros(cep);
+    if (numeroCep.length != 8) return;
+
+    this.casaService.buscarCep(numeroCep)
+      .subscribe(
+        cepRetorno => this.preencherCep(cepRetorno),
+        erro => this.errorsEndereco.push(erro)
+      );
+  }
+
+  preencherCep(cep: CepBusca) {
+    this.formGroupEndereco.patchValue({
+      logradouro: cep.logradouro,
+      bairro: cep.bairro,
+      cidade: cep.localidade,
+      estado: cep.uf,
+      cep: cep.cep
+    });
+  }
+
+  atualizarEndereco() {
+    if (this.formGroupEndereco.dirty) {
+      this.endereco = Object.assign({}, this.endereco, this.formGroupEndereco.value);
+
+      this.casaService.atualizarEndereco(this.endereco)
+        .subscribe(
+          sucesso => this.processarSucessoEndereco(sucesso),
+          falha => this.processarFalhaEndereco(falha)
+        )
+    }
+  }
+
+  processarSucessoEndereco(response: any) {
+    this.errorsEndereco = [];
+
+    this.toastr.success("Endereço atualizado com sucesso.", "Sucesso!");
+
+    this.moradia.endereco = this.endereco;
+    this.modalService.dismissAll();
+  }
+
+  processarFalhaEndereco(fail: any) {
+    if (fail.error.errors) {
+      this.errorsEndereco = fail.error.errors;
+    }
+
+    this.toastr.error('Não foi possível atualizar a moradia.', 'Ocorreu um problema!');
+  }
+
 }

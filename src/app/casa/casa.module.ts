@@ -1,3 +1,4 @@
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -30,7 +31,8 @@ import { CasaResolve } from './services/casa.resolve';
     ReactiveFormsModule,
     HttpClientModule,
     NgBrazil,
-    TextMaskModule
+    TextMaskModule,
+    NgxSpinnerModule
   ],
   providers: [
     CasaService,

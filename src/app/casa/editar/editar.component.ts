@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MASKS, NgBrazilValidators } from 'ng-brazil';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DisplayMessage, GenericValidator, ValidationMessages } from './../../utils/generic-form-validation';
@@ -44,7 +45,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
     private casaService: CasaService,
     private toastr: ToastrService,
     private router: Router,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private spinnerService: NgxSpinnerService) {
 
     this.moradia = this.route.snapshot.data['casa'];
 
@@ -93,6 +95,8 @@ export class EditarComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.spinnerService.show();
+
     this.formGroupMoradia = this.formBuilder.group({
       id: '',
       valorDespesas: ['', [Validators.required, NgBrazilValidators.currency]]
@@ -111,6 +115,10 @@ export class EditarComponent implements OnInit, AfterViewInit {
     });
 
     this.preencherForm();
+
+    setTimeout(() => {
+      this.spinnerService.hide();
+    }, 1000);
   }
 
   preencherForm() {

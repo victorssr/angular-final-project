@@ -1,3 +1,4 @@
+import { CasaGuard } from './services/casa.guard';
 import { ExcluirComponent } from './excluir/excluir.component';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { CasaResolve } from './services/casa.resolve';
@@ -14,24 +15,34 @@ const casaRouterConfig: Routes = [
         path: '', component: CasaAppComponent,
         children: [
             { path: 'lista', component: ListaComponent },
-            { path: 'novo', component: NovoComponent },
+            {
+                path: 'novo', component: NovoComponent,
+                canActivate: [CasaGuard],
+                data: [{ claim: 'Casas', value: 'Adicionar' }]
+            },
             {
                 path: 'editar/:id', component: EditarComponent,
+                canActivate: [CasaGuard],
                 resolve: {
                     casa: CasaResolve
-                }
+                },
+                data: [{ claim: 'Casas', value: 'Atualizar' }]
             },
             {
                 path: 'detalhes/:id', component: DetalhesComponent,
+                canActivate: [CasaGuard],
                 resolve: {
                     casa: CasaResolve
-                }
+                },
+                data: [{ claim: 'Casas', value: 'Detalhe' }]
             },
             {
                 path: 'excluir/:id', component: ExcluirComponent,
+                canActivate: [CasaGuard],
                 resolve: {
                     casa: CasaResolve
-                }
+                },
+                data: [{ claim: 'Casas', value: 'Excluir' }]
             },
         ]
     }

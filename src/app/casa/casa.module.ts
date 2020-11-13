@@ -1,3 +1,4 @@
+import { CasaGuard } from './services/casa.guard';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -38,7 +39,8 @@ import { ExcluirComponent } from './excluir/excluir.component';
   ],
   providers: [
     CasaService,
-    CasaResolve
+    CasaResolve,
+    CasaGuard
   ]
 })
 export class CasaModule { }

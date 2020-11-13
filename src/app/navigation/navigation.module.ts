@@ -7,6 +7,7 @@ import { FooterComponent } from './footer/footer.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuLoginComponent } from './menu-login/menu-login.component';
+import { ForbiddenComponent } from './forbidden/forbidden.component';
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import { MenuLoginComponent } from './menu-login/menu-login.component';
         HomeComponent,
         FooterComponent,
         NotFoundComponent,
-        MenuLoginComponent
+        MenuLoginComponent,
+        ForbiddenComponent
     ],
     imports: [
         CommonModule,

@@ -1,7 +1,8 @@
-import { HttpClientModule } from '@angular/common/http';
+import { ErrorInterceptor } from './services/error.handler.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NavigationModule } from './navigation/navigation.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +13,10 @@ import { TextMaskModule } from 'angular2-text-mask';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+export const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+];
 
 @NgModule({
   declarations: [
@@ -29,8 +34,9 @@ import { AppComponent } from './app.component';
     TextMaskModule,
     NgxSpinnerModule
   ],
-  providers: [],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers: [
+    httpInterceptorProviders
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

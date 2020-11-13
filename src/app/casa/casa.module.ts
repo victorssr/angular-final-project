@@ -1,5 +1,4 @@
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -33,7 +32,6 @@ import { ExcluirComponent } from './excluir/excluir.component';
     CasaRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     NgBrazil,
     TextMaskModule,
     NgxSpinnerModule

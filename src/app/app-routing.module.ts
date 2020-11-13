@@ -1,3 +1,4 @@
+import { ForbiddenComponent } from './navigation/forbidden/forbidden.component';
 import { NotFoundComponent } from './navigation/not-found/not-found.component';
 import { HomeComponent } from './navigation/home/home.component';
 import { NgModule } from '@angular/core';
@@ -18,6 +19,7 @@ const routes: Routes = [
   },
   
   { path: 'not-found', component: NotFoundComponent },
+  { path: 'forbidden', component: ForbiddenComponent },
   { path: '**', redirectTo: '/not-found' },
 ];
 

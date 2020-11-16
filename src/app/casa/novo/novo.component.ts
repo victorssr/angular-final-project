@@ -108,12 +108,11 @@ export class NovoComponent implements OnInit, AfterViewInit {
           sucesso => this.processarSucesso(sucesso),
           falha => this.processarFalha(falha)
         );
-
-      this.alteracaoNaoSalva = false;
     }
   }
 
   processarSucesso(response: any) {
+    this.alteracaoNaoSalva = false;
     this.novoFormGroup.reset();
     this.errors = [];
 

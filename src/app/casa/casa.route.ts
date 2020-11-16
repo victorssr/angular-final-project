@@ -18,6 +18,7 @@ const casaRouterConfig: Routes = [
             {
                 path: 'novo', component: NovoComponent,
                 canActivate: [CasaGuard],
+                canDeactivate: [CasaGuard],
                 data: [{ claim: 'Casas', value: 'Adicionar' }]
             },
             {

@@ -1,15 +1,25 @@
+import { CanDeactivate } from '@angular/router';
 import { Router } from '@angular/router';
 import { LocalStorageUtils } from './../../utils/localstorage';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { NovoComponent } from '../novo/novo.component';
 
 
 @Injectable()
-export class CasaGuard implements CanActivate {
+export class CasaGuard implements CanActivate, CanDeactivate<NovoComponent> {
 
     localStorage = new LocalStorageUtils();
 
     constructor(private router: Router) { }
+
+    canDeactivate(component: NovoComponent) {
+        if (component.alteracaoNaoSalva) {
+            return window.confirm('Tem certeza que deseja abandonar o preenchimento do formulário?');
+        }
+
+        return true;
+    }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (!this.localStorage.obterTokenUsuario()) {
@@ -28,7 +38,7 @@ export class CasaGuard implements CanActivate {
             if (!userClaim) {
                 this.redirecionaAcessoNegado();
             }
-            
+
             const userClaimValue = userClaim.value as string;
             if (!userClaimValue.includes(claimData.value)) {
                 this.redirecionaAcessoNegado();

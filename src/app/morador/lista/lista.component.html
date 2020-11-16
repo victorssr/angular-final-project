@@ -1,0 +1,44 @@
+<div class="container main-container">
+
+    <h1>Moradores</h1>
+
+    <p>
+        <a [routerLink]="['/morador/novo']" class="btn btn-success">
+            <i class="fa fa-plus mr-2"></i>Cadastrar morador
+        </a>
+    </p>
+
+    <table class="table table-hover">
+        <tr class="thead-dark">
+            <th></th>
+            <th>Nome</th>
+            <th>Nascimento</th>
+            <th>Documento</th>
+            <th>Receita Mensal</th>
+            <th>Contribuição Mensal</th>
+            <th>Tipo</th>
+            <th style="width: 20%;"></th>
+        </tr>
+
+        <tr *ngFor="let morador of moradores">
+            <td>{{morador.foto}}</td>
+            <td>{{morador.nomeCompleto}}</td>
+            <td>{{morador.dataNascimento}}</td>
+            <td>{{morador.documento}}</td>
+            <td>{{morador.receitaMensal}}</td>
+            <td>{{morador.contribuicao}}</td>
+            <td>{{morador.tipoMorador}}</td>
+            <td>
+                <a class="btn btn-info mr-2" [routerLink]="['/morador/detalhes/', morador.id]">
+                    <i class="fa fa-search"></i>
+                </a>
+                <a class="btn btn-warning mr-2" [routerLink]="['/morador/editar/', morador.id]">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a class="btn btn-danger mr-2" [routerLink]="['/morador/excluir/', morador.id]">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>

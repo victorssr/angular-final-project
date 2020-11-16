@@ -17,7 +17,11 @@ const routes: Routes = [
     loadChildren: () => import('./casa/casa.module')
       .then(m => m.CasaModule)
   },
-  
+  {
+    path: 'morador',
+    loadChildren: () => import('./morador/morador.module')
+      .then(m => m.MoradorModule)
+  },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'forbidden', component: ForbiddenComponent },
   { path: '**', redirectTo: '/not-found' },

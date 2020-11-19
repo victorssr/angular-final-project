@@ -17,7 +17,7 @@
             <select id="casaId" name="casaId" formControlName="casaId" class="form-control"
                 [ngClass]="{ 'is-invalid': displayMessage.casaId }">
                 <option value="">Selecione uma moradia</option>
-                <option *ngFor="let moradia of moradias" value="moradia.id">{{ moradia.id }}</option>
+                <option *ngFor="let moradia of moradias" value="{{moradia.id}}">{{ moradia.id }}</option>
             </select>
             <span class="text-danger" *ngIf="displayMessage.casaId">
                 <p [innerHTML]="displayMessage.casaId"></p>
@@ -37,8 +37,7 @@
             <label class="control-label">Receita mensal:</label>
             <input type="text" id="receitaMensal" name="receitaMensal" formControlName="receitaMensal"
                 class="form-control" [ngClass]="{ 'is-invalid': displayMessage.receitaMensal }"
-                placeholder="Informe a receita mensal"
-                [textMask]="{ mask: MASKS.currency.textMask }" />
+                placeholder="Informe a receita mensal" [textMask]="{ mask: MASKS.currency.textMask }" />
             <span class="text-danger" *ngIf="displayMessage.receitaMensal">
                 <p [innerHTML]="displayMessage.receitaMensal"></p>
             </span>
@@ -57,11 +56,25 @@
         <div class="form-group">
             <label class="control-label">Foto:</label>
             <br />
-            <input type="file" id="foto" name="foto" formControlName="foto"
-                [ngClass]="{ 'is-invalid': displayMessage.foto }" />
-            <span class="text-danger" *ngIf="displayMessage.foto">
-                <p [innerHTML]="displayMessage.foto"></p>
-            </span>
+
+            <div class="custom-file">
+                <input type="file" id="foto" name="foto" formControlName="foto" class="custom-file-input"
+                    [ngClass]="{ 'is-invalid': displayMessage.foto }" (change)="fotoFileChanged($event)" />
+                <label data-browse="Procurar" class="custom-file-label" for="foto">Procurar</label>
+
+                <span class="text-danger" *ngIf="displayMessage.foto">
+                    <p [innerHTML]="displayMessage.foto"></p>
+                </span>
+            </div>
+
+            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
+                [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="4 / 3" [resizeToWidth]="256"
+                [cropperMinWidth]="128" [onlyScaleDown]="true" [roundCropper]="false" [canvasRotation]="canvasRotation"
+                [transform]="transform" [alignImage]="'left'" [style.display]="showCropper ? null : 'none'" format="png"
+                (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                (loadImageFailed)="loadImageFailed()"></image-cropper>
+
+            <img [src]="croppedImage" [style.border]="croppedImage ? '1px solid black' : 'none'" />
         </div>
 
         <div class="form-group">
@@ -89,7 +102,7 @@
         <div class="form-group">
             <label class="control-label">Tipo documento:</label>
             <br />
-            <input type="radio" id="cpf" name="tipoDocumento" formControlName="tipoDocumento" value="0"  />
+            <input type="radio" id="cpf" name="tipoDocumento" formControlName="tipoDocumento" value="0" />
             <label for="cpf">Pessoa Física</label>
             <input type="radio" id="cnpj" name="tipoDocumento" formControlName="tipoDocumento" value="1" />
             <label for="cnpj">Pessoa Jurídica</label>

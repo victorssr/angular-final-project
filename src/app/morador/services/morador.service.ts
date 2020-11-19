@@ -26,4 +26,13 @@ export class MoradorService extends BaseService {
             .pipe(catchError(this.serviceError));
     }
 
+    cadastrar(morador: Morador): Observable<Morador> {
+        return this.http
+            .post(this.urlServiceV1 + 'moradores', morador, this.obterAuthHeaderJson())
+            .pipe(
+                map(this.extractData),
+                catchError(this.serviceError)
+            );
+    }
+
 }

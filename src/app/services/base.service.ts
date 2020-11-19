@@ -39,6 +39,8 @@ export abstract class BaseService {
             }
         }
 
+        console.log(response);
+
         return throwError(response);
     }
 }

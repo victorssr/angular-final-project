@@ -1,9 +1,10 @@
 import { TextMaskModule } from 'angular2-text-mask';
-import { NgBrazil } from 'ng-brazil';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgBrazil } from 'ng-brazil';
 
 import { MoradorService } from './services/morador.service';
 import { MoradorGuard } from './services/morador.guard';
@@ -24,7 +25,8 @@ import { NovoComponent } from './novo/novo.component';
     FormsModule,
     ReactiveFormsModule,
     NgBrazil,
-    TextMaskModule
+    TextMaskModule,
+    ImageCropperModule
   ],
   providers: [
     MoradorService,

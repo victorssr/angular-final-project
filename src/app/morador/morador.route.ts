@@ -1,3 +1,4 @@
+import { DetalhesComponent } from './detalhes/detalhes.component';
 import { ExclusaoComponent } from './exclusao/exclusao.component';
 import { MoradiaResolve } from './services/moradia.resolve';
 import { MoradorResolve } from './services/morador.resolve';
@@ -26,7 +27,7 @@ const routeConfig: Routes = [
             {
                 path: 'edicao/:id', component: EdicaoComponent, canActivate: [MoradorGuard],
                 data: [
-                    { claim: 'Moradores', value: 'Adicionar' }
+                    { claim: 'Moradores', value: 'Atualizar' }
                 ],
                 resolve: {
                     morador: MoradorResolve,
@@ -38,6 +39,12 @@ const routeConfig: Routes = [
                 data: [
                     { claim: 'Moradores', value: 'Excluir' }
                 ],
+                resolve: {
+                    morador: MoradorResolve
+                }
+            },
+            {
+                path: 'detalhes/:id', component: DetalhesComponent, canActivate: [MoradorGuard],
                 resolve: {
                     morador: MoradorResolve
                 }

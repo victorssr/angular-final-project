@@ -1,3 +1,6 @@
+import { MoradiaResolve } from './services/moradia.resolve';
+import { MoradorResolve } from './services/morador.resolve';
+import { EdicaoComponent } from './edicao/edicao.component';
 import { NovoComponent } from './novo/novo.component';
 import { MoradorGuard } from './services/morador.guard';
 import { ListaComponent } from './lista/lista.component';
@@ -18,6 +21,16 @@ const routeConfig: Routes = [
                 data: [
                     { claim: 'Moradores', value: 'Adicionar' }
                 ]
+            },
+            {
+                path: 'edicao/:id', component: EdicaoComponent, canActivate: [MoradorGuard],
+                data: [
+                    { claim: 'Moradores', value: 'Adicionar' }
+                ],
+                resolve: {
+                    morador: MoradorResolve,
+                    moradias: MoradiaResolve
+                }
             },
         ]
     }

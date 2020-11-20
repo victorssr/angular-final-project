@@ -17,4 +17,8 @@ export class StringUtils {
         let currencyNumber: number = +formatedCurrency;
         return currencyNumber;
     }
+
+    public static formatNumberToMask(number: number): string {
+        return number.toString().replace(".", ",");
+    }
 }

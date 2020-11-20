@@ -1,7 +1,9 @@
+import { MoradiaResolve } from './services/moradia.resolve';
+import { MoradorResolve } from './services/morador.resolve';
 import { TextMaskModule } from 'angular2-text-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgBrazil } from 'ng-brazil';
@@ -12,12 +14,14 @@ import { MoradorRoutingModule } from './morador.route';
 import { MoradorAppComponent } from './morador.app.component';
 import { ListaComponent } from './lista/lista.component';
 import { NovoComponent } from './novo/novo.component';
+import { EdicaoComponent } from './edicao/edicao.component';
 
 @NgModule({
   declarations: [
     MoradorAppComponent,
     ListaComponent,
-    NovoComponent
+    NovoComponent,
+    EdicaoComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +34,10 @@ import { NovoComponent } from './novo/novo.component';
   ],
   providers: [
     MoradorService,
-    MoradorGuard
+    MoradorGuard,
+    MoradorResolve,
+    MoradiaResolve,
+    DatePipe
   ]
 })
 export class MoradorModule { }

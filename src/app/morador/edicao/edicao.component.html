@@ -1,0 +1,133 @@
+<div class="container main-container">
+    <h1>Editar morador</h1>
+
+    <form novalidate [formGroup]="edicaoFormGroup">
+        <hr />
+        <h4>Informe os campos abaixo:</h4>
+
+        <div class="alert alert-danger" *ngIf="errors.length > 0">
+            <h5>Não foi possível prosseguir:</h5>
+            <ul>
+                <li *ngFor="let error of errors">{{ error }}</li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Casa:</label>
+            <select id="casaId" name="casaId" formControlName="casaId" class="form-control"
+                [ngClass]="{ 'is-invalid': displayMessage.casaId }">
+                <option value="">Selecione uma moradia</option>
+                <option *ngFor="let moradia of moradias" value="{{moradia.id}}">{{ moradia.id }}</option>
+            </select>
+            <span class="text-danger" *ngIf="displayMessage.casaId">
+                <p [innerHTML]="displayMessage.casaId"></p>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Nome completo:</label>
+            <input id="nomeCompleto" name="nomeCompleto" formControlName="nomeCompleto" class="form-control"
+                [ngClass]="{ 'is-invalid': displayMessage.nomeCompleto }" placeholder="Informe o nome completo" />
+            <span class="text-danger" *ngIf="displayMessage.nomeCompleto">
+                <p [innerHTML]="displayMessage.nomeCompleto"></p>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Receita mensal:</label>
+            <input type="text" id="receitaMensal" name="receitaMensal" formControlName="receitaMensal"
+                class="form-control" [ngClass]="{ 'is-invalid': displayMessage.receitaMensal }"
+                placeholder="Informe a receita mensal" [textMask]="{ mask: MASKS.currency.textMask }" />
+            <span class="text-danger" *ngIf="displayMessage.receitaMensal">
+                <p [innerHTML]="displayMessage.receitaMensal"></p>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Contribuição mensal:</label>
+            <input type="text" id="contribuicao" name="contribuicao" formControlName="contribuicao" class="form-control"
+                [ngClass]="{ 'is-invalid': displayMessage.contribuicao }" placeholder="Informe a contribuição mensal"
+                [textMask]="{ mask: MASKS.currency.textMask }" />
+            <span class="text-danger" *ngIf="displayMessage.contribuicao">
+                <p [innerHTML]="displayMessage.contribuicao"></p>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Foto:</label>
+            <br />
+            <div class="custom-file">
+                <input type="hidden" formControlName="foto" />
+                <input #fileInput id="foto" name="foto" type="file" class="custom-file-input"
+                    [ngClass]="{ 'is-invalid': displayMessage.foto }" (change)="fotoFileChanged(fileInput.files)" />
+                <label data-browse="Procurar" class="custom-file-label" for="foto">Procurar</label>
+
+                <span class="text-danger" *ngIf="displayMessage.foto">
+                    <p [innerHTML]="displayMessage.foto"></p>
+                </span>
+            </div>
+
+        </div>
+
+        <div class="form-group" *ngIf="!selectedImageBase64">
+            <label class="control-label">Foto atual:</label>
+            <br />
+            <img [src]="currentImagePath" class="rounded-circle" width="100px" height="100px" />
+        </div>
+        <div class="form-group" *ngIf="selectedImageBase64">
+            <label class="control-label">Nova foto:</label>
+            <br />
+            <img src="{{ selectedImagePreview }}" class="rounded-circle" width="100px" height="100px" />
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Data de nascimento:</label>
+            <input type="date" id="dataNascimento" name="dataNascimento" formControlName="dataNascimento"
+                class="form-control" [ngClass]="{ 'is-invalid': displayMessage.dataNascimento }"
+                placeholder="Informe a contribuição mensal" />
+            <span class="text-danger" *ngIf="displayMessage.dataNascimento">
+                <p [innerHTML]="displayMessage.dataNascimento"></p>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Tipo:</label>
+            <br />
+            <input type="radio" id="tipoMorador-1" name="tipoMorador" formControlName="tipoMorador" value="0" />
+            <label for="tipoMorador-1">Tipo 1</label>
+            <input type="radio" id="tipoMorador-2" name="tipoMorador" formControlName="tipoMorador" value="1" />
+            <label for="tipoMorador-2">Tipo 2</label>
+            <span class="text-danger" *ngIf="displayMessage.tipoMorador">
+                <p [innerHTML]="displayMessage.tipoMorador"></p>
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Tipo documento:</label>
+            <br />
+            <input type="radio" id="cpf" name="tipoDocumento" formControlName="tipoDocumento" value="0" />
+            <label for="cpf">Pessoa Física</label>
+            <input type="radio" id="cnpj" name="tipoDocumento" formControlName="tipoDocumento" value="1" />
+            <label for="cnpj">Pessoa Jurídica</label>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">Documento:</label>
+            <input type="text" id="documento" name="documento" formControlName="documento" class="form-control"
+                [ngClass]="{ 'is-invalid': displayMessage.documento }" placeholder="{{ placeholderDocumento }}"
+                [textMask]="tipoDocumentoForm().value === '1' ? { mask: MASKS.cnpj.textMask } : { mask: MASKS.cpf.textMask }" />
+            <span class="text-danger" *ngIf="displayMessage.documento">
+                <p [innerHTML]="displayMessage.documento"></p>
+            </span>
+        </div>
+
+        <button type="button" class="btn btn-primary mr-5" [routerLink]="['/morador/lista']">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Voltar
+        </button>
+        <button type="submit" class="btn btn-success" [disabled]="!edicaoFormGroup.valid || !edicaoFormGroup.dirty" (click)="salvar()">
+            <i class="fa fa-check mr-2"></i>
+            Alterar morador
+        </button>
+    </form>
+</div>

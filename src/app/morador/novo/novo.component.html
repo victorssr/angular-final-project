@@ -67,14 +67,15 @@
                 </span>
             </div>
 
-            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false"
-                [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="4 / 3" [resizeToWidth]="256"
-                [cropperMinWidth]="128" [onlyScaleDown]="true" [roundCropper]="false" [canvasRotation]="canvasRotation"
-                [transform]="transform" [alignImage]="'left'" [style.display]="showCropper ? null : 'none'" format="png"
-                (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                (loadImageFailed)="loadImageFailed()"></image-cropper>
+            <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+                [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="4 / 3" [onlyScaleDown]="true"
+                [resizeToWidth]="100" [resizeToHeight]="100" [cropperStaticWidth]="100" [cropperStaticHeight]="100"
+                [roundCropper]="true" [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'left'"
+                [style.display]="showCropper ? null : 'none'" format="png" (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
+            </image-cropper>
 
-            <img [src]="croppedImage" [style.border]="croppedImage ? '1px solid black' : 'none'" />
+            <img [src]="croppedImage" [style.border]="croppedImage ? '1px solid black' : 'none'" class="rounded-circle" />
         </div>
 
         <div class="form-group">

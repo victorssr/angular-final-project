@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { MoradorService } from './../services/morador.service';
 import { Morador } from './../models/morador';
 import { Component, OnInit } from '@angular/core';
@@ -8,15 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaComponent implements OnInit {
 
-  moradores: Morador[];
+  imagesUrl: string = environment.urlImages;
+
+  moradores: Morador[] = [];
+  errorMessage: string;
 
   constructor(private moradorService: MoradorService) { }
 
   ngOnInit(): void {
     this.moradorService.obterTodos()
-      .subscribe(() => {
-        sucesso => this.moradores = sucesso;
-      });
+      .subscribe(
+        moradores => this.moradores = moradores,
+        falha => this.errorMessage
+      );
   }
 
 }

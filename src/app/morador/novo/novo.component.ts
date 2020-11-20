@@ -147,6 +147,8 @@ export class NovoComponent implements OnInit, AfterViewInit {
       this.morador.foto = this.imageName;
       this.morador.fotoImagem = this.croppedImage.split(',')[1];
 
+      this.morador.documento = StringUtils.somenteNumeros(this.morador.documento);
+
       this.morador.tipoDocumento = +this.morador.tipoDocumento;
       this.morador.tipoMorador = +this.morador.tipoMorador;
 

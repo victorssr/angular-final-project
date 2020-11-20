@@ -13,11 +13,8 @@ export class MoradorService extends BaseService {
     constructor(private http: HttpClient) { super(); }
 
     obterTodos(): Observable<Morador[]> {
-        return this.http.get(this.urlServiceV1 + 'moradores', this.obterAuthHeaderJson())
-            .pipe(
-                map(this.extractData),
-                catchError(this.serviceError)
-            );
+        return this.http.get<Morador[]>(this.urlServiceV1 + 'moradores', this.obterAuthHeaderJson())
+            .pipe(catchError(this.serviceError));
     }
 
     obterMoradias(): Observable<Moradia[]> {

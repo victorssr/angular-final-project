@@ -11,24 +11,24 @@
     <table class="table table-hover">
         <tr class="thead-dark">
             <th></th>
+            <th class="text-center">Tipo</th>
             <th>Nome</th>
-            <th>Nascimento</th>
+            <th class="text-center">Nascimento</th>
             <th>Documento</th>
-            <th>Receita Mensal</th>
-            <th>Contribuição Mensal</th>
-            <th>Tipo</th>
-            <th style="width: 20%;"></th>
+            <th class="text-center">Receita Mensal</th>
+            <th class="text-center">Contribuição Mensal</th>            
+            <th class="text-center" style="width: 16%;"></th>
         </tr>
 
         <tr *ngFor="let morador of moradores">
-            <td>{{morador.foto}}</td>
+            <td><img src="{{imagesUrl}}/imagens/{{morador.foto}}" class="rounded-circle" width="100px" height="100px" /></td>
+            <td class="text-center">{{morador.tipoMorador == 1 ? 'Gestor' : 'Morador'}}</td>
             <td>{{morador.nomeCompleto}}</td>
-            <td>{{morador.dataNascimento}}</td>
-            <td>{{morador.documento}}</td>
-            <td>{{morador.receitaMensal}}</td>
-            <td>{{morador.contribuicao}}</td>
-            <td>{{morador.tipoMorador}}</td>
-            <td>
+            <td class="text-center">{{morador.dataNascimento | date: 'dd/MM/yyyy'}}</td>
+            <td>{{morador.tipoDocumento == 0 ? (morador.documento | cpf) : (morador.documento | cnpj)}}</td>
+            <td class="text-center">{{morador.receitaMensal | currencyBrazil}}</td>
+            <td class="text-center">{{morador.contribuicao | currencyBrazil }}</td>
+            <td class="text-center">
                 <a class="btn btn-info mr-2" [routerLink]="['/morador/detalhes/', morador.id]">
                     <i class="fa fa-search"></i>
                 </a>

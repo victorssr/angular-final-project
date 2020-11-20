@@ -17,6 +17,7 @@ import { EditarComponent } from './editar/editar.component';
 import { CasaResolve } from './services/casa.resolve';
 import { DetalhesComponent } from './detalhes/detalhes.component';
 import { ExcluirComponent } from './excluir/excluir.component';
+import { MoradoresListaComponent } from './moradores-lista/moradores-lista.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ExcluirComponent } from './excluir/excluir.component';
     NovoComponent,
     EditarComponent,
     DetalhesComponent,
-    ExcluirComponent
+    ExcluirComponent,
+    MoradoresListaComponent
   ],
   imports: [
     CommonModule,

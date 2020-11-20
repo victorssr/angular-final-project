@@ -113,7 +113,7 @@ export class EditarComponent implements OnInit, AfterViewInit {
       cep: ['', [Validators.required, NgBrazilValidators.cep]],
       casaId: ''
     });
-
+    
     this.preencherForm();
 
     setTimeout(() => {

@@ -70,6 +70,10 @@
         </table>
     </form>
 
+    <hr>
+    <h4>Moradores</h4>
+    <app-moradores-lista [moradores]="moradia.moradores"></app-moradores-lista>
+
     <ng-template #content let-modal>
         <div class="modal-header">
             <h4 class="modal-title">Endereço</h4>

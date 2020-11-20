@@ -1,3 +1,4 @@
+import { ExclusaoComponent } from './exclusao/exclusao.component';
 import { MoradiaResolve } from './services/moradia.resolve';
 import { MoradorResolve } from './services/morador.resolve';
 import { EdicaoComponent } from './edicao/edicao.component';
@@ -32,6 +33,15 @@ const routeConfig: Routes = [
                     moradias: MoradiaResolve
                 }
             },
+            {
+                path: 'exclusao/:id', component: ExclusaoComponent, canActivate: [MoradorGuard],
+                data: [
+                    { claim: 'Moradores', value: 'Excluir' }
+                ],
+                resolve: {
+                    morador: MoradorResolve
+                }
+            }
         ]
     }
 ]

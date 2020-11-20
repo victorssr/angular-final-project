@@ -47,4 +47,13 @@ export class MoradorService extends BaseService {
             );
     }
 
+    excluir(id: string): Observable<Morador> {
+        return this.http
+            .delete(this.urlServiceV1 + 'moradores/' + id, this.obterAuthHeaderJson())
+            .pipe(
+                map(this.extractData),
+                catchError(this.serviceError)
+            );
+    }
+
 }

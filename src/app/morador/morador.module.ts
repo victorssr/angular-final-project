@@ -15,13 +15,15 @@ import { MoradorAppComponent } from './morador.app.component';
 import { ListaComponent } from './lista/lista.component';
 import { NovoComponent } from './novo/novo.component';
 import { EdicaoComponent } from './edicao/edicao.component';
+import { ExclusaoComponent } from './exclusao/exclusao.component';
 
 @NgModule({
   declarations: [
     MoradorAppComponent,
     ListaComponent,
     NovoComponent,
-    EdicaoComponent
+    EdicaoComponent,
+    ExclusaoComponent
   ],
   imports: [
     CommonModule,

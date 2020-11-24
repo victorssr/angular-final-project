@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl, FormControlName } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
 
   usuario: Usuario;
   loginForm: FormGroup;
+  returnUrl: string;
 
   validationMessages: ValidationMessages;
   genericValidator: GenericValidator;
@@ -30,7 +31,10 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private accountService: AccountService,
     private toastr: ToastrService,
-    private router: Router) {
+    private router: Router,
+    private activedRoute: ActivatedRoute) {
+
+    this.returnUrl = this.activedRoute.snapshot.queryParams['returnUrl'];
 
     this.validationMessages = {
       email: {
@@ -82,7 +86,7 @@ export class LoginComponent implements OnInit {
 
     let toast = this.toastr.success('Login efetuado com sucesso.', 'Seja bem-vindo(a)!');
     toast.onHidden.subscribe(() => {
-      this.router.navigate(['/home']);
+      this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/home']);
     });
   }
 

@@ -19,7 +19,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (error instanceof HttpErrorResponse) {
                 if (error.status === 401) {
                     this.localStorage.limparDadosLocaisUsuario();
-                    this.router.navigate(['/account/login']);
+                    this.router.navigate(['/account/login'], { queryParams: { returnUrl: this.router.url } });
                 }
                 else if (error.status === 403) {
                     this.router.navigate(['/forbidden']);

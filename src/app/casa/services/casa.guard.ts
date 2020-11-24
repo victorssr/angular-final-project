@@ -23,7 +23,7 @@ export class CasaGuard implements CanActivate, CanDeactivate<NovoComponent> {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         if (!this.localStorage.obterTokenUsuario()) {
-            this.router.navigate(['/account/login']);
+            this.router.navigate(['/account/login'], { queryParams: { returnUrl: this.router.url } });
         }
 
         const claimData = route.data[0];

@@ -1,10 +1,7 @@
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { LocalStorageUtils } from './../utils/localstorage';
-import { Injectable } from '@angular/core';
 
-
-@Injectable()
-export class BaseGuard {
+export abstract class BaseGuard {
     private localStorage = new LocalStorageUtils();
 
     constructor(protected router: Router) { }

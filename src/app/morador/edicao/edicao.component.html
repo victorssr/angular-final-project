@@ -114,7 +114,7 @@
         <div class="form-group">
             <label class="control-label">Documento:</label>
             <input type="text" id="documento" name="documento" formControlName="documento" class="form-control"
-                [ngClass]="{ 'is-invalid': displayMessage.documento }" placeholder="{{ placeholderDocumento }}"
+                [ngClass]="{ 'is-invalid': displayMessage.documento }" placeholder="{{ textoDocumento }}"
                 [textMask]="tipoDocumentoForm().value === '1' ? { mask: MASKS.cnpj.textMask } : { mask: MASKS.cpf.textMask }" />
             <span class="text-danger" *ngIf="displayMessage.documento">
                 <p [innerHTML]="displayMessage.documento"></p>

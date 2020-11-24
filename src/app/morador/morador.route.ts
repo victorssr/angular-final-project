@@ -22,7 +22,10 @@ const routeConfig: Routes = [
                 path: 'novo', component: NovoComponent, canActivate: [MoradorGuard],
                 data: [
                     { claim: 'Moradores', value: 'Adicionar' }
-                ]
+                ],
+                resolve: {
+                    moradias: MoradiaResolve
+                }
             },
             {
                 path: 'edicao/:id', component: EdicaoComponent, canActivate: [MoradorGuard],

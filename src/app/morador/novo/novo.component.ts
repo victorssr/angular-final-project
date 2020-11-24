@@ -1,22 +1,22 @@
-import { StringUtils } from './../../utils/string-utils';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Morador } from './../models/morador';
 import { FormGroup, FormBuilder, Validators, FormControlName, AbstractControl } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 
 import { Observable, fromEvent, merge } from 'rxjs';
-import { ImageCroppedEvent, ImageTransform, Dimensions } from 'ngx-image-cropper';
-import { NgBrazilValidators, MASKS } from 'ng-brazil';
+import { ImageCroppedEvent, ImageTransform } from 'ngx-image-cropper';
+import { NgBrazilValidators } from 'ng-brazil';
 
-import { Moradia } from '../models/morador';
+import { StringUtils } from './../../utils/string-utils';
 import { MoradorService } from './../services/morador.service';
-import { ValidationMessages, DisplayMessage, GenericValidator } from './../../utils/generic-form-validation';
+import { MoradorFormBaseComponent } from './../morador-form.base.component';
+import { Moradia } from '../models/morador';
 
 @Component({
   selector: 'app-novo',
   templateUrl: './novo.component.html'
 })
-export class NovoComponent implements OnInit, AfterViewInit {
+export class NovoComponent extends MoradorFormBaseComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
   imageChangedEvent: any = '';
@@ -28,58 +28,18 @@ export class NovoComponent implements OnInit, AfterViewInit {
   imageName: string = '';
   canvasRotation = 0;
 
-  MASKS = MASKS;
-  moradias: Moradia[] = [];
+  moradias: Moradia[];
 
   novoFormGroup: FormGroup;
-  morador: Morador;
-
-  alteracaoNaoSalva: Boolean = false;
-  textoDocumento: string = "CPF (Requerido)";
-  errors: string[] = [];
-
-  validationMessage: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
 
   constructor(private formBuilder: FormBuilder,
     private moradorService: MoradorService,
-    private toastr: ToastrService) {
-    this.validationMessage = {
-      casaId: {
-        required: 'Selecione a casa do morador'
-      },
-      nomeCompleto: {
-        required: 'Informe o nome completo'
-      },
-      receitaMensal: {
-        required: 'Informe a receita mensal',
-        currency: 'O valor informado é inválido'
-      },
-      contribuicao: {
-        required: 'Informe a contribuição mensal',
-        currency: 'O valor informado é inválido'
-      },
-      foto: {
-        required: 'Informe a foto'
-      },
-      dataNascimento: {
-        required: 'Informe a data de nascimento'
-      },
-      tipoMorador: {
-        required: 'Informe o tipo'
-      },
-      documento: {
-        required: 'Informe o documento',
-        cpf: 'O CPF informado não é válido',
-        cnpj: 'O CNPJ informado não é válido'
-      },
-      tipoDocumento: {
-        required: 'Informe o tipo de documento'
-      }
-    };
+    private toastr: ToastrService,
+    private activatedRoute: ActivatedRoute) {
+      
+    super();
 
-    this.genericValidator = new GenericValidator(this.validationMessage);
+    this.moradias = this.activatedRoute.snapshot.data['moradias'];
   }
 
   ngOnInit(): void {
@@ -99,37 +59,10 @@ export class NovoComponent implements OnInit, AfterViewInit {
       tipoMorador: '0',
       tipoDocumento: '0'
     });
-
-    this.moradorService.obterMoradias()
-      .subscribe(response => this.moradias = response);
   }
 
   ngAfterViewInit(): void {
-    const controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControlElement: ElementRef) => fromEvent(formControlElement.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.trocarValidacaoDocumento();
-      this.processarMensagens();
-    });
-  }
-
-  processarMensagens() {
-    this.alteracaoNaoSalva = true;
-    this.displayMessage = this.genericValidator.processarMensagens(this.novoFormGroup);
-  }
-
-  trocarValidacaoDocumento() {
-    if (this.tipoDocumentoForm().value === '1') {
-      this.documentoForm().clearValidators();
-      this.documentoForm().setValidators([Validators.required, NgBrazilValidators.cnpj]);
-      this.textoDocumento = "CNPJ (Requerido)";
-    }
-    else {
-      this.documentoForm().clearValidators();
-      this.documentoForm().setValidators([Validators.required, NgBrazilValidators.cpf]);
-      this.textoDocumento = "CPF (Requerido)";
-    }
+    super.setControlBlurs(this.formInputElements, this.novoFormGroup, this.tipoDocumentoForm(), this.documentoForm())
   }
 
   tipoDocumentoForm(): AbstractControl {

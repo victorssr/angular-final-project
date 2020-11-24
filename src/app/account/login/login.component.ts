@@ -1,32 +1,27 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl, FormControlName } from '@angular/forms';
-import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChildren, ElementRef } from '@angular/core';
 
 import { CustomValidators } from 'ng2-validation';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, fromEvent, merge } from 'rxjs';
+import { merge } from 'rxjs';
 
-import { ValidationMessages, GenericValidator, DisplayMessage } from './../../utils/generic-form-validation';
+import { ValidationMessages } from './../../utils/generic-form-validation';
 import { AccountService } from './../services/account.service';
 import { Usuario } from './../models/usuario';
+import { FormBaseComponent } from './../../base-components/form.base.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends FormBaseComponent implements OnInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
-
-  errors: any[] = [];
 
   usuario: Usuario;
   loginForm: FormGroup;
   returnUrl: string;
-
-  validationMessages: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
 
   constructor(private fb: FormBuilder,
     private accountService: AccountService,
@@ -34,9 +29,11 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private activedRoute: ActivatedRoute) {
 
+    super();
+
     this.returnUrl = this.activedRoute.snapshot.queryParams['returnUrl'];
 
-    this.validationMessages = {
+    const validationMessages: ValidationMessages = {
       email: {
         required: 'Informe o e-mail',
         email: 'Informe um e-mail válido',
@@ -47,7 +44,7 @@ export class LoginComponent implements OnInit {
       }
     };
 
-    this.genericValidator = new GenericValidator(this.validationMessages);
+    super.setGenericValidator(validationMessages);
   }
 
   ngOnInit(): void {
@@ -58,11 +55,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, "blur"));
+    const controlBlurs = super.getBlurControls(this.formInputElements);
 
     merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.loginForm);
+      super.processarMensagens(this.loginForm);
     });
   }
 
@@ -84,7 +80,7 @@ export class LoginComponent implements OnInit {
 
     this.accountService.localStorage.salvarDadosLocaisUsuario(response);
 
-    let toast = this.toastr.success('Login efetuado com sucesso.', 'Seja bem-vindo(a)!');
+    const toast = this.toastr.success('Login efetuado com sucesso.', 'Seja bem-vindo(a)!');
     toast.onHidden.subscribe(() => {
       this.returnUrl ? this.router.navigate([this.returnUrl]) : this.router.navigate(['/home']);
     });

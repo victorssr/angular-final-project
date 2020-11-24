@@ -6,41 +6,30 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControlName } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
-import { NgBrazilValidators, MASKS } from 'ng-brazil';
-import { Observable, fromEvent, merge } from 'rxjs';
+import { NgBrazilValidators } from 'ng-brazil';
 
-import { ValidationMessages, GenericValidator, DisplayMessage } from './../../utils/generic-form-validation';
 import { environment } from './../../../environments/environment';
 import { StringUtils } from './../../utils/string-utils';
-import { Morador, Moradia } from './../models/morador';
+import { Moradia } from './../models/morador';
+import { MoradorFormBaseComponent } from '../morador-form.base.component';
 
 @Component({
   selector: 'app-edicao',
   templateUrl: './edicao.component.html'
 })
-export class EdicaoComponent implements OnInit, AfterViewInit {
+export class EdicaoComponent extends MoradorFormBaseComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
-  MASKS = MASKS;
-
+  moradias: Moradia[];
   edicaoFormGroup: FormGroup;
-  alteracaoNaoSalva: boolean = false;
-  placeholderDocumento: string = 'CPF (Requerido)';
+
   urlImages: string = environment.urlImages;
   currentImagePath: string;
-  errors: string[] = [];
 
   selectedImageBase64: string;
   selectedImagePreview: string;
   selectedImageName: string;
-
-  moradias: Moradia[];
-  morador: Morador;
-
-  validationMessages: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
 
   constructor(private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
@@ -49,41 +38,10 @@ export class EdicaoComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private route: Router) {
 
+    super();
+
     this.morador = this.activatedRoute.snapshot.data['morador'];
     this.moradias = this.activatedRoute.snapshot.data['moradias'];
-
-    this.validationMessages = {
-      casaId: {
-        required: 'Selecione a casa do morador'
-      },
-      nomeCompleto: {
-        required: 'Informe o nome completo'
-      },
-      receitaMensal: {
-        required: 'Informe a receita mensal',
-        currency: 'O valor informado é inválido'
-      },
-      contribuicao: {
-        required: 'Informe a contribuição mensal',
-        currency: 'O valor informado é inválido'
-      },
-      dataNascimento: {
-        required: 'Informe a data de nascimento'
-      },
-      tipoMorador: {
-        required: 'Informe o tipo'
-      },
-      documento: {
-        required: 'Informe o documento',
-        cpf: 'O CPF informado não é válido',
-        cnpj: 'O CNPJ informado não é válido'
-      },
-      tipoDocumento: {
-        required: 'Informe o tipo de documento'
-      }
-    };
-
-    this.genericValidator = new GenericValidator(this.validationMessages);
   }
 
   ngOnInit(): void {
@@ -119,26 +77,7 @@ export class EdicaoComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formElement: ElementRef) => fromEvent(formElement.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.trocarValidacaoDocumento();
-      this.processarMensagens();
-    });
-  }
-
-  trocarValidacaoDocumento() {
-    this.documentoForm().clearValidators();
-
-    if (this.tipoDocumentoForm().value === '1') {
-      this.documentoForm().setValidators([Validators.required, NgBrazilValidators.cnpj]);
-      this.placeholderDocumento = 'CNPJ (Requerido)';
-    }
-    else {
-      this.documentoForm().setValidators([Validators.required, NgBrazilValidators.cpf]);
-      this.placeholderDocumento = 'CPF (Requerido)';
-    }
+    super.setControlBlurs(this.formInputElements, this.edicaoFormGroup, this.tipoDocumentoForm(), this.documentoForm());
   }
 
   tipoDocumentoForm(): AbstractControl {
@@ -147,11 +86,6 @@ export class EdicaoComponent implements OnInit, AfterViewInit {
 
   documentoForm(): AbstractControl {
     return this.edicaoFormGroup.get('documento');
-  }
-
-  processarMensagens() {
-    this.displayMessage = this.genericValidator.processarMensagens(this.edicaoFormGroup);
-    this.alteracaoNaoSalva = true;
   }
 
   fotoFileChanged(file: any) {

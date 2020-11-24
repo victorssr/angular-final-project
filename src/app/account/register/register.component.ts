@@ -4,37 +4,32 @@ import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@ang
 
 import { CustomValidators } from 'ng2-validation';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, fromEvent, merge } from 'rxjs';
+import { merge } from 'rxjs';
 
-import { ValidationMessages, GenericValidator, DisplayMessage } from './../../utils/generic-form-validation';
+import { ValidationMessages } from './../../utils/generic-form-validation';
 import { AccountService } from './../services/account.service';
 import { Usuario } from './../models/usuario';
+import { FormBaseComponent } from 'src/app/base-components/form.base.component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent implements OnInit, AfterViewInit {
+export class RegisterComponent extends FormBaseComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
-  errors: any[] = [];
-
   usuario: Usuario;
   registerForm: FormGroup;
-
-  alteracaoNaoSalva: Boolean = false;
-
-  validationMessages: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
 
   constructor(private fb: FormBuilder,
     private accountService: AccountService,
     private toastr: ToastrService,
     private router: Router) {
 
-    this.validationMessages = {
+    super();
+
+    const validationMessages: ValidationMessages = {
       email: {
         required: 'Informe o e-mail',
         email: 'Informe um e-mail válido',
@@ -50,7 +45,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       }
     };
 
-    this.genericValidator = new GenericValidator(this.validationMessages);
+    super.setGenericValidator(validationMessages);
   }
 
   ngOnInit(): void {
@@ -65,12 +60,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, "blur"));
+    const controlBlurs = super.getBlurControls(this.formInputElements);
 
     merge(...controlBlurs).subscribe(() => {
-      this.displayMessage = this.genericValidator.processarMensagens(this.registerForm);
-      this.alteracaoNaoSalva = true;
+      super.processarMensagens(this.registerForm);
     });
   }
 
@@ -84,13 +77,13 @@ export class RegisterComponent implements OnInit, AfterViewInit {
           falha => { this.processarFalha(falha); }
         );
 
-      this.alteracaoNaoSalva = false;
+      super.alteracaoNaoSalva = false;
     }
   }
 
   processarSucesso(response: any) {
     this.registerForm.reset();
-    this.errors = [];
+    super.errors = [];
 
     this.accountService.localStorage.salvarDadosLocaisUsuario(response);
 

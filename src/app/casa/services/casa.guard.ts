@@ -1,17 +1,15 @@
 import { CanDeactivate } from '@angular/router';
 import { Router } from '@angular/router';
-import { LocalStorageUtils } from './../../utils/localstorage';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot } from '@angular/router';
 import { Injectable } from '@angular/core';
+
+import { BaseGuard } from './../../services/base.guard';
 import { NovoComponent } from '../novo/novo.component';
 
-
 @Injectable()
-export class CasaGuard implements CanActivate, CanDeactivate<NovoComponent> {
+export class CasaGuard extends BaseGuard implements CanActivate, CanDeactivate<NovoComponent> {
 
-    localStorage = new LocalStorageUtils();
-
-    constructor(private router: Router) { }
+    constructor(protected router: Router) { super(router); }
 
     canDeactivate(component: NovoComponent) {
         if (component.alteracaoNaoSalva) {
@@ -21,34 +19,8 @@ export class CasaGuard implements CanActivate, CanDeactivate<NovoComponent> {
         return true;
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (!this.localStorage.obterTokenUsuario()) {
-            this.router.navigate(['/account/login'], { queryParams: { returnUrl: this.router.url } });
-        }
-
-        const claimData = route.data[0];
-
-        if (claimData.claim) {
-            const user = this.localStorage.obterUsuario();
-            if (!user.claims) {
-                this.redirecionaAcessoNegado();
-            }
-
-            const userClaim = user.claims.find(c => c.type === claimData.claim);
-            if (!userClaim) {
-                this.redirecionaAcessoNegado();
-            }
-
-            const userClaimValue = userClaim.value as string;
-            if (!userClaimValue.includes(claimData.value)) {
-                this.redirecionaAcessoNegado();
-            }
-        }
-
-        return true;
+    canActivate(route: ActivatedRouteSnapshot) {
+        return super.validaClaims(route);
     }
 
-    redirecionaAcessoNegado() {
-        this.router.navigate(['/forbidden']);
-    }
 }

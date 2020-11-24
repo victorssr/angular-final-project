@@ -1,43 +1,15 @@
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
-import { LocalStorageUtils } from './../../utils/localstorage';
+import { BaseGuard } from './../../services/base.guard';
 
 @Injectable()
-export class MoradorGuard implements CanActivate {
+export class MoradorGuard extends BaseGuard implements CanActivate {
 
-    localStorage = new LocalStorageUtils();
+    constructor(protected router: Router) { super(router); }
 
-    constructor(private router: Router) { }
-
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (!this.localStorage.obterTokenUsuario()) {
-            this.router.navigate(['/account/login'], { queryParams: { returnUrl: this.router.url } });
-        }
-
-        const claimData = route.data[0];
-        if (claimData) {
-            if (claimData.claim) {
-                const user = this.localStorage.obterUsuario();
-                if (!user.claims) {
-                    this.redirecionarSemPermissao();
-                }
-
-                const userClaim = user.claims.find(c => c.type === claimData.claim);
-                if (!userClaim) {
-                    this.redirecionarSemPermissao();
-                }
-
-                if (!userClaim.value.includes(claimData.value)) {
-                    this.redirecionarSemPermissao();
-                }
-            }
-        }
-
-        return true;
+    canActivate(route: ActivatedRouteSnapshot) {
+        return super.validaClaims(route);
     }
 
-    redirecionarSemPermissao() {
-        this.router.navigate(['/forbidden']);
-    }
 }

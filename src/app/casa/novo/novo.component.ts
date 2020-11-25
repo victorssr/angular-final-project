@@ -1,71 +1,27 @@
-import { ToastrService } from 'ngx-toastr';
-import { Moradia } from './../models/moradia';
-import { StringUtils } from './../../utils/string-utils';
-
 import { FormGroup, FormBuilder, Validators, FormControlName } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 
-import { MASKS, NgBrazilValidators } from 'ng-brazil';
-import { Observable, fromEvent, merge } from 'rxjs';
+import { NgBrazilValidators } from 'ng-brazil';
+import { ToastrService } from 'ngx-toastr';
 
-import { DisplayMessage, ValidationMessages, GenericValidator } from './../../utils/generic-form-validation';
+import { StringUtils } from './../../utils/string-utils';
 import { CepBusca } from './../models/cep';
 import { CasaService } from './../services/casa.service';
+import { CasaBaseFormComponent } from '../casa-form.app.component';
 
 @Component({
   selector: 'app-novo',
   templateUrl: './novo.component.html'
 })
-export class NovoComponent implements OnInit, AfterViewInit {
+export class NovoComponent extends CasaBaseFormComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
-  public MASKS = MASKS;
-
-  moradia: Moradia;
-
   novoFormGroup: FormGroup;
-  alteracaoNaoSalva: Boolean = false;
-
-  validationMessages: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
-
-  errors: string[] = [];
 
   constructor(private formBuilder: FormBuilder,
     private casaService: CasaService,
-    private toastr: ToastrService) {
-
-    this.validationMessages = {
-      valorDespesas: {
-        required: 'O valor das despesas é obrigatório',
-        min: 'O valor das despesas é obrigatório',
-        currency: 'O valor da despesas está inválido'
-      },
-      logradouro: {
-        required: 'O logradouro é obrigatório'
-      },
-      numero: {
-        required: 'O número é obrigatório'
-      },
-      bairro: {
-        required: 'O bairro é obrigatório'
-      },
-      cidade: {
-        required: 'O cidade é obrigatório'
-      },
-      estado: {
-        required: 'O estado é obrigatório'
-      },
-      cep: {
-        required: 'O cep é obrigatório',
-        cep: 'O cep informado é inválido',
-      },
-    };
-
-    this.genericValidator = new GenericValidator(this.validationMessages);
-  }
+    private toastr: ToastrService) { super(); }
 
   ngOnInit(): void {
     this.novoFormGroup = this.formBuilder.group({
@@ -83,17 +39,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElements
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.processarMensagens();
-    });
-  }
-
-  processarMensagens() {
-    this.displayMessage = this.genericValidator.processarMensagens(this.novoFormGroup);
-    this.alteracaoNaoSalva = true;
+    super.setControlBlurs(this.formInputElements, this.novoFormGroup);
   }
 
   salvar() {
@@ -149,7 +95,7 @@ export class NovoComponent implements OnInit, AfterViewInit {
       }
     });
 
-    this.processarMensagens();
+    super.processarMensagens(this.novoFormGroup);
   }
 
 }

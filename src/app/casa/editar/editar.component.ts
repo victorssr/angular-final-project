@@ -1,43 +1,31 @@
-import { CepBusca } from './../models/cep';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControlName } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChildren, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { MASKS, NgBrazilValidators } from 'ng-brazil';
-import { Observable, fromEvent, merge } from 'rxjs';
+import { NgBrazilValidators } from 'ng-brazil';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { DisplayMessage, GenericValidator, ValidationMessages } from './../../utils/generic-form-validation';
 import { CasaService } from './../services/casa.service';
 import { StringUtils } from './../../utils/string-utils';
 import { Endereco } from './../models/endereco';
-import { Moradia } from './../models/moradia';
+import { CasaBaseFormComponent } from '../casa-form.app.component';
+import { CepBusca } from './../models/cep';
 
 @Component({
   selector: 'app-editar',
   templateUrl: './editar.component.html'
 })
-export class EditarComponent implements OnInit, AfterViewInit {
+export class EditarComponent extends CasaBaseFormComponent implements OnInit, AfterViewInit {
 
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElement: ElementRef[];
-
-  public MASKS = MASKS;
 
   formGroupMoradia: FormGroup;
   formGroupEndereco: FormGroup;
 
-  errors: string[] = [];
   errorsEndereco: string[] = [];
-  alteracaoNaoSalva: boolean = false;
-
-  validationMessages: ValidationMessages;
-  genericValidator: GenericValidator;
-  displayMessage: DisplayMessage = {};
-
-  moradia: Moradia;
   endereco: Endereco;
 
   constructor(private route: ActivatedRoute,
@@ -48,50 +36,13 @@ export class EditarComponent implements OnInit, AfterViewInit {
     private modalService: NgbModal,
     private spinnerService: NgxSpinnerService) {
 
+    super();
+
     this.moradia = this.route.snapshot.data['casa'];
-
-    this.validationMessages = {
-      valorDespesas: {
-        required: 'O valor das despesas é obrigatório',
-        min: 'O valor das despesas é obrigatório',
-        currency: 'O valor da despesas está inválido'
-      },
-      logradouro: {
-        required: 'O logradouro é obrigatório'
-      },
-      numero: {
-        required: 'O número é obrigatório'
-      },
-      bairro: {
-        required: 'O bairro é obrigatório'
-      },
-      cidade: {
-        required: 'O cidade é obrigatório'
-      },
-      estado: {
-        required: 'O estado é obrigatório'
-      },
-      cep: {
-        required: 'O cep é obrigatório',
-        cep: 'O cep informado é inválido',
-      },
-    };
-
-    this.genericValidator = new GenericValidator(this.validationMessages);
   }
 
   ngAfterViewInit(): void {
-    let controlBlurs: Observable<any>[] = this.formInputElement
-      .map((formControl: ElementRef) => fromEvent(formControl.nativeElement, 'blur'));
-
-    merge(...controlBlurs).subscribe(() => {
-      this.processarMensagens();
-    });
-  }
-
-  processarMensagens() {
-    this.displayMessage = this.genericValidator.processarMensagens(this.formGroupMoradia);
-    this.alteracaoNaoSalva = true;
+    super.setControlBlurs(this.formInputElement, this.formGroupMoradia)
   }
 
   ngOnInit(): void {
@@ -113,7 +64,7 @@ export class EditarComponent implements OnInit, AfterViewInit {
       cep: ['', [Validators.required, NgBrazilValidators.cep]],
       casaId: ''
     });
-    
+
     this.preencherForm();
 
     setTimeout(() => {

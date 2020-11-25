@@ -1,8 +1,9 @@
 import { FormGroup } from '@angular/forms';
 import { ElementRef } from '@angular/core';
-import { ValidationMessages, GenericValidator, DisplayMessage } from './../utils/generic-form-validation';
-import { Observable, fromEvent, merge } from 'rxjs';
 
+import { fromEvent } from 'rxjs';
+
+import { ValidationMessages, GenericValidator, DisplayMessage } from './../utils/generic-form-validation';
 
 export abstract class FormBaseComponent {
 

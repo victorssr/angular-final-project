@@ -15,6 +15,9 @@ exports.config = {
   capabilities: {
     browserName: 'chrome'
   },
+  suites: {
+    morador: './src/cadastro-morador/app.cadastro-morador.e2e-spec.ts'
+  },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
